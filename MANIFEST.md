@@ -2,7 +2,7 @@
 
 ## What we do
 
-The simplest task tracker in the history.  Features with the human face. It's not task tracker for corporations, it's task tracker for productive teams.
+Taskany — the simplest task tracker for teams.  Features with the human face. It's not task tracker for corporations, it's task tracker for productive teams.
 
 ## Religion
 
