@@ -1,2 +1,3 @@
-# taskany
-Intelligent task manager. Open source and radically transparent.
+# Taskany
+
+The simplest task tracker for teams.
