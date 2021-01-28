@@ -1,3 +1,3 @@
 # Taskany
 
-The simplest task tracker for teams.
+The simplest tracker for teams. Love your tasks again.
