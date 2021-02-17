@@ -20,6 +20,9 @@ Taskany — the simplest task tracker for teams.  Features with the human face. 
 - configurable
 - customizable
 - blazing fast
+- external data providers: github, jira, trello
+- custom filter based board colums
+- abstract notes in board colums
 
 ## MVP Scope
 
