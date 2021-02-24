@@ -1,0 +1,38 @@
+{
+  "name": "taskany",
+  "private": true,
+  "author": "Taskany Team <support@taskany.io>",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts,.tsx ."
+  },
+  "devDependencies": {
+    "@commitlint/cli": "12.0.0",
+    "@commitlint/config-conventional": "12.0.0",
+    "@typescript-eslint/eslint-plugin": "4.15.2",
+    "@typescript-eslint/parser": "4.15.2",
+    "babel-eslint": "10.1.0",
+    "eslint": "7.20.0",
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-plugin-cypress": "2.11.2",
+    "eslint-plugin-flowtype": "5.3.1",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jest": "24.1.5",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-prettier": "3.3.1",
+    "eslint-plugin-react": "7.22.0",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "husky": "5.1.1",
+    "lerna": "^3.22.1",
+    "lint-staged": "10.5.4",
+    "prettier": "2.2.1",
+    "stylelint": "13.11.0",
+    "stylelint-config-recommended": "3.0.0",
+    "stylelint-config-styled-components": "0.1.1",
+    "stylelint-order": "4.0.0",
+    "stylelint-prettier": "1.1.2",
+    "stylelint-processor-styled-components": "1.10.0",
+    "typescript": "4.2.2"
+  }
+}
