@@ -6,7 +6,7 @@ module.exports = {
         '@typescript-eslint/no-empty-function': 'off',
         '@typescript-eslint/no-empty-interface': 'off',
         'no-restricted-syntax': 'off',
-        'spaced-comment': ['error', 'always', { markers: ['/'] }], /// разрешаем ts-require directive
+        'spaced-comment': ['error', 'always', { markers: ['/'] }], // ts-require directive
         'comma-dangle': ['error', 'always-multiline'],
         'arrow-parens': ['error', 'always'],
         indent: 'off',
@@ -48,7 +48,7 @@ module.exports = {
         ],
         'import/no-unresolved': 'off',
         'import/extensions': 'off',
-        'import/no-extraneous-dependencies': ['off'], // можно включить тока нужно резолвы разрулить
+        'import/no-extraneous-dependencies': ['off'],
         'arrow-body-style': 'off',
         'padding-line-between-statements': 'off',
         'no-unused-expressions': 'off',
