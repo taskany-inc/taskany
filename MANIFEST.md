@@ -25,6 +25,7 @@ Taskany — the simplest task tracker for teams.  Features with the human face. 
 - abstract notes in board colums
 - cli tool to get issues and other
 - hotkeys based UI
+- tokens based UI themes
 
 ## MVP Scope
 
