@@ -2,6 +2,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator typegraphql {
+  provider = "typegraphql-prisma"
+  output   = "../node_modules/@generated/prisma"
+}
+
 datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"

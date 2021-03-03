@@ -35,7 +35,7 @@ const init = async () => {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    // app.post(graphql.graphqlPath, passport.authenticate('jwt', { session: false }));
+    app.post(graphql.graphqlPath, passport.authenticate('jwt', { session: false }));
 
     const httpServer = http.createServer(app);
 

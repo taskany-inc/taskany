@@ -1,7 +1,16 @@
 {
   "name": "@taskany/server",
+  "description": "Taskany GraphQL Server",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "url": "git@github.com:taskany-inc/taskany.git"
+  },
   "scripts": {
-    "dev": "ts-node-dev --no-notify --respawn --transpile-only src/index.ts"
+    "postinstall": "npm run prisma:types",
+    "dev": "ts-node-dev --no-notify --respawn --transpile-only src/index.ts",
+    "prisma:types": "npx prisma generate",
+    "graphql:schema": "ts-node ./scripts/generateSchema"
   },
   "dependencies": {
     "@prisma/client": "2.17.0",
@@ -13,16 +22,22 @@
     "jsonwebtoken": "8.5.1",
     "passport": "0.4.1",
     "passport-jwt": "4.0.0",
+    "prisma": "2.17.0",
     "reflect-metadata": "0.1.13",
     "type-graphql": "1.1.1"
   },
   "devDependencies": {
-    "prisma": "2.17.0",
     "@types/graphql": "14.5.0",
+    "@types/graphql-fields": "1.3.3",
     "@types/node": "12.20.4",
+    "@types/passport": "1.0.6",
+    "@types/passport-jwt": "3.0.5",
     "@types/ws": "7.4.0",
+    "graphql-fields": "2.0.3",
+    "graphql-scalars": "1.8.0",
     "ts-node": "9.1.1",
     "ts-node-dev": "1.1.1",
-    "typescript": "4.1.5"
+    "typegraphql-prisma": "0.11.1",
+    "typescript": "4.2.2"
   }
 }

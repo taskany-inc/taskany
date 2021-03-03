@@ -14,11 +14,9 @@ import {
     Subscription,
     PubSubEngine,
 } from 'type-graphql';
+import { Post, User } from '@generated/prisma';
 
 import { Context } from '../../types/context';
-import { User } from '../User/User';
-
-import { Post } from './Post';
 
 @InputType()
 class PostIDInput {
@@ -89,8 +87,8 @@ export class PostResolver {
     }
 
     @Subscription({ topics: 'POSTS' })
-    postsSubscription(@Root() { id, title, content }: Post): Post {
-        return { id, title, content };
+    postsSubscription(@Root() { id, title, content, published }: Post): Post {
+        return { id, title, content, published };
     }
 
     @Mutation(() => Post, { nullable: true })

@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/client';
 
+import { useQuery } from '../@generated/queries';
 import Header from '../components/Header';
 
 export default function Page() {
     const [session, loading] = useSession();
     const [content, setContent] = useState();
+    const { data } = useQuery();
 
-    // Fetch content from protected route
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch('/api/protected');
@@ -32,7 +33,6 @@ export default function Page() {
         );
     }
 
-    // If session exists, display content
     return (
         <>
             <Header />
@@ -40,6 +40,7 @@ export default function Page() {
             <p>
                 <strong>{content || '\u00a0'}</strong>
             </p>
+            <p>{JSON.stringify(data)}</p>
         </>
     );
 }
