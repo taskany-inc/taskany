@@ -7,6 +7,7 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { ApolloServer } from 'apollo-server-express';
 
 import { createContext, buildSchema } from './database';
+import { log } from './lib/logger';
 
 passport.use(
     new JwtStrategy(
@@ -24,6 +25,7 @@ passport.use(
 );
 
 const init = async () => {
+    log.verbose('init graphql server');
     const graphql = new ApolloServer({
         schema: await buildSchema(),
         context: createContext(),
@@ -35,16 +37,20 @@ const init = async () => {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
+    log.verbose('setup jwt auth');
     app.post(graphql.graphqlPath, passport.authenticate('jwt', { session: false }));
 
+    log.verbose('create http server');
     const httpServer = http.createServer(app);
 
+    log.verbose('apply express app to apollo server');
     graphql.applyMiddleware({ app });
+    log.verbose('init subscriptions');
     graphql.installSubscriptionHandlers(httpServer);
 
-    httpServer.listen(4000, () => {
-        // eslint-disable-next-line no-console
-        console.log(`🚀 Server ready at http://localhost:4000${graphql.graphqlPath}`);
+    httpServer.listen(process.env.TASKANY_PORT, () => {
+        log.info(`server is ready on port: ${process.env.TASKANY_PORT}.`);
+        log.info(`graphql gate: ${graphql.graphqlPath}.`);
     });
 };
 
