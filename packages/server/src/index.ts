@@ -11,11 +11,11 @@ import { createContext, buildSchema } from './database';
 passport.use(
     new JwtStrategy(
         {
-            secretOrKey: 'lol',
+            secretOrKey: process.env.TASKANY_JWT_SECRET,
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         },
         async (token, done) => {
-            // FIXME: get/create user with prisma
+            // TODO: https://github.com/taskany-inc/taskany/issues/18
             if (token) {
                 return done(null, token);
             }

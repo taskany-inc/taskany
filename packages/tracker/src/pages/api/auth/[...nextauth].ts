@@ -2,58 +2,44 @@ import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import jwt from 'jsonwebtoken';
 
-// For more information on each option (and a full list of options) go to
-// https://next-auth.js.org/configuration/options
 export default NextAuth({
-    // https://next-auth.js.org/configuration/providers
     providers: [
         Providers.Email({
             server: process.env.EMAIL_SERVER,
             from: process.env.EMAIL_FROM,
         }),
-        // Providers.Apple({
-        //     clientId: process.env.APPLE_ID,
-        //     clientSecret: {
-        //         appleId: process.env.APPLE_ID,
-        //         teamId: process.env.APPLE_TEAM_ID,
-        //         privateKey: process.env.APPLE_PRIVATE_KEY,
-        //         keyId: process.env.APPLE_KEY_ID,
-        //     },
-        // }),
-        // Providers.Auth0({
-        //     clientId: process.env.AUTH0_ID,
-        //     clientSecret: process.env.AUTH0_SECRET,
-        //     domain: process.env.AUTH0_DOMAIN,
-        // }),
-        // Providers.Facebook({
-        //     clientId: process.env.FACEBOOK_ID,
-        //     clientSecret: process.env.FACEBOOK_SECRET,
-        // }),
-        Providers.GitHub({
-            clientId: 'Iv1.31291a6f627c9972', // process.env.GITHUB_ID,
-            clientSecret: '0dfbfec067951351e0aee8ba110b434856e3744b', // process.env.GITHUB_SECRET,
+        Providers.Apple({
+            clientId: process.env.TASKANY_APPLE_ID,
+            clientSecret: {
+                appleId: process.env.TASKANY_APPLE_ID,
+                teamId: process.env.TASKANY_APPLE_TEAM_ID,
+                privateKey: process.env.TASKANY_APPLE_PRIVATE_KEY,
+                keyId: process.env.TASKANY_APPLE_KEY_ID,
+            },
         }),
-        // Providers.Google({
-        //     clientId: process.env.GOOGLE_ID,
-        //     clientSecret: process.env.GOOGLE_SECRET,
-        // }),
-        // Providers.Twitter({
-        //     clientId: process.env.TWITTER_ID,
-        //     clientSecret: process.env.TWITTER_SECRET,
-        // }),
+        Providers.Facebook({
+            clientId: process.env.TASKANY_FACEBOOK_ID,
+            clientSecret: process.env.TASKANY_FACEBOOK_SECRET,
+        }),
+        Providers.GitHub({
+            clientId: process.env.TASKANY_GITHUB_ID,
+            clientSecret: process.env.TASKANY_GITHUB_SECRET,
+        }),
+        Providers.Google({
+            clientId: process.env.TASKANY_GOOGLE_ID,
+            clientSecret: process.env.TASKANY_GOOGLE_SECRET,
+        }),
+        Providers.Twitter({
+            clientId: process.env.TASKANY_TWITTER_ID,
+            clientSecret: process.env.TASKANY_TWITTER_SECRET,
+        }),
     ],
-    // The secret should be set to a reasonably long random string.
-    // It is used to sign cookies and to sign and encrypt JSON Web Tokens, unless
-    // a separate secret is defined explicitly for encrypting the JWT.
-    secret: process.env.SECRET,
-
+    secret: process.env.TASKANY_JWT_SECRET,
     session: {
         jwt: true,
     },
-
-    // https://next-auth.js.org/configuration/options#jwt
     jwt: {
-        secret: 'lol', // process.env.JWT_SECRET
+        secret: process.env.TASKANY_JWT_SECRET,
         encode: async ({ secret, token }) => {
             const payload = {
                 sub: token.sub,
@@ -98,6 +84,5 @@ export default NextAuth({
     // https://next-auth.js.org/configuration/events
     events: {},
 
-    // Enable debug messages in the console if you are having problems
-    debug: false,
+    debug: process.env.DEBUG,
 });
