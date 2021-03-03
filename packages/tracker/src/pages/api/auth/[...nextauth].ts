@@ -4,36 +4,42 @@ import jwt from 'jsonwebtoken';
 
 export default NextAuth({
     providers: [
-        Providers.Email({
-            server: process.env.EMAIL_SERVER,
-            from: process.env.EMAIL_FROM,
-        }),
-        Providers.Apple({
-            clientId: process.env.TASKANY_APPLE_ID,
-            clientSecret: {
-                appleId: process.env.TASKANY_APPLE_ID,
-                teamId: process.env.TASKANY_APPLE_TEAM_ID,
-                privateKey: process.env.TASKANY_APPLE_PRIVATE_KEY,
-                keyId: process.env.TASKANY_APPLE_KEY_ID,
-            },
-        }),
-        Providers.Facebook({
-            clientId: process.env.TASKANY_FACEBOOK_ID,
-            clientSecret: process.env.TASKANY_FACEBOOK_SECRET,
-        }),
-        Providers.GitHub({
-            clientId: process.env.TASKANY_GITHUB_ID,
-            clientSecret: process.env.TASKANY_GITHUB_SECRET,
-        }),
-        Providers.Google({
-            clientId: process.env.TASKANY_GOOGLE_ID,
-            clientSecret: process.env.TASKANY_GOOGLE_SECRET,
-        }),
-        Providers.Twitter({
-            clientId: process.env.TASKANY_TWITTER_ID,
-            clientSecret: process.env.TASKANY_TWITTER_SECRET,
-        }),
-    ],
+        process.env.EMAIL_SERVER &&
+            Providers.Email({
+                server: process.env.EMAIL_SERVER,
+                from: process.env.EMAIL_FROM,
+            }),
+        process.env.TASKANY_APPLE_ID &&
+            Providers.Apple({
+                clientId: process.env.TASKANY_APPLE_ID,
+                clientSecret: {
+                    appleId: process.env.TASKANY_APPLE_ID,
+                    teamId: process.env.TASKANY_APPLE_TEAM_ID,
+                    privateKey: process.env.TASKANY_APPLE_PRIVATE_KEY,
+                    keyId: process.env.TASKANY_APPLE_KEY_ID,
+                },
+            }),
+        process.env.TASKANY_FACEBOOK_ID &&
+            Providers.Facebook({
+                clientId: process.env.TASKANY_FACEBOOK_ID,
+                clientSecret: process.env.TASKANY_FACEBOOK_SECRET,
+            }),
+        process.env.TASKANY_GITHUB_ID &&
+            Providers.GitHub({
+                clientId: process.env.TASKANY_GITHUB_ID,
+                clientSecret: process.env.TASKANY_GITHUB_SECRET,
+            }),
+        process.env.TASKANY_GOOGLE_ID &&
+            Providers.Google({
+                clientId: process.env.TASKANY_GOOGLE_ID,
+                clientSecret: process.env.TASKANY_GOOGLE_SECRET,
+            }),
+        process.env.TASKANY_TWITTER_ID &&
+            Providers.Twitter({
+                clientId: process.env.TASKANY_TWITTER_ID,
+                clientSecret: process.env.TASKANY_TWITTER_SECRET,
+            }),
+    ].filter(Boolean),
     secret: process.env.TASKANY_JWT_SECRET,
     session: {
         jwt: true,
