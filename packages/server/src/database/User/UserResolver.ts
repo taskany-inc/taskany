@@ -1,10 +1,8 @@
 import 'reflect-metadata';
 import { Resolver, Query, Mutation, Arg, Ctx, FieldResolver, Root, Int, InputType, Field } from 'type-graphql';
+import { Post, User } from '@generated/prisma';
 
 import { Context } from '../../types/context';
-import { Post } from '../Post/Post';
-
-import { User } from './User';
 
 @InputType()
 class SignupUserInput {

@@ -6,10 +6,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const cookieName = secureCookie ? '__Secure-next-auth.session-token' : 'next-auth.session-token';
     const token = req.cookies[cookieName];
 
-    if (!token) res.status(402).send('Access denied');
+    if (!token) return res.status(402).send('Access denied');
 
     const apiRes = await redaxios({
-        url: 'http://localhost:4000/profile',
+        url: 'http://localhost:4000/graphql',
         method: 'post',
         headers: {
             Authorization: `Bearer ${token}`,
@@ -17,5 +17,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         data: req.body,
     });
 
-    res.send(apiRes.data);
+    return res.send(apiRes.data);
 };

@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { resolvers } from '@generated/prisma';
 import { PubSub, Request } from 'apollo-server-express';
 import * as tq from 'type-graphql';
 
@@ -7,7 +8,7 @@ import { UserResolver } from './User/UserResolver';
 
 export const buildSchema = () =>
     tq.buildSchema({
-        resolvers: [PostResolver, UserResolver],
+        resolvers: [...resolvers, PostResolver, UserResolver],
     });
 
 const prisma = new PrismaClient();
