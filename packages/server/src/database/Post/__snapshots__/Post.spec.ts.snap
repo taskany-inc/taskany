@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Post draft 1`] = `
+Object {
+  "createDraft": Object {
+    "author": Object {
+      "id": 1,
+      "name": "Alice",
+    },
+    "id": 1,
+    "published": false,
+  },
+}
+`;
+
+exports[`Post returns feed 1`] = `
+Object {
+  "feed": Array [],
+}
+`;

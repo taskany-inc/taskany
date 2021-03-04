@@ -24,10 +24,10 @@ passport.use(
     ),
 );
 
-const init = async () => {
+const init = () => {
     log.verbose('init graphql server');
     const graphql = new ApolloServer({
-        schema: await buildSchema(),
+        schema: buildSchema(),
         context: createContext(),
         playground: true,
     });
