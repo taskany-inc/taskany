@@ -1,7 +1,7 @@
 import { useSession, getSession } from 'next-auth/client';
 import Head from 'next/head';
 
-import Header from '../components/Header';
+import Header from '../components/Header/Header';
 
 export default function Home() {
     // As this page uses Server Side Rendering, the `session` will be already
