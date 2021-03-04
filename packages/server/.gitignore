@@ -3,3 +3,4 @@ node_modules
 # taskany
 src/@generated
 schema.graphql
+postgres
