@@ -22,7 +22,6 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "module": "esnext",
-    "isolatedModules": true,
     "jsx": "preserve"
   },
   "include": [
