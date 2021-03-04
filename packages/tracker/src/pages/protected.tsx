@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/client';
 
 import { useQuery } from '../@generated/queries';
-import Header from '../components/Header';
+import Header from '../components/Header/Header';
 
 export default function Page() {
     const [session, loading] = useSession();
