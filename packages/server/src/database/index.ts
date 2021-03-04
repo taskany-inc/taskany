@@ -1,13 +1,14 @@
 import { PrismaClient } from '@prisma/client';
-import { resolvers } from '@generated/prisma';
 import { PubSub, Request } from 'apollo-server-express';
 import * as tq from 'type-graphql';
 
-import { PostResolver } from './Post/PostResolver';
-import { UserResolver } from './User/UserResolver';
+import { resolvers } from '../@generated/prisma';
+
+import { PostResolver } from './Post/Post';
+import { UserResolver } from './User/User';
 
 export const buildSchema = () =>
-    tq.buildSchema({
+    tq.buildSchemaSync({
         resolvers: [...resolvers, PostResolver, UserResolver],
     });
 

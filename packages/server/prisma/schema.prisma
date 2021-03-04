@@ -4,11 +4,11 @@ generator client {
 
 generator typegraphql {
   provider = "typegraphql-prisma"
-  output   = "../node_modules/@generated/prisma"
+  output   = "../src/@generated/prisma"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("TASKANY_DATABASE_URL")
 }
 

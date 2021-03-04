@@ -1,11 +1,12 @@
-import { resolvers } from '@generated/prisma';
+import 'reflect-metadata';
 import * as tq from 'type-graphql';
 
-import { PostResolver } from '../src/database/Post/PostResolver';
-import { UserResolver } from '../src/database/User/UserResolver';
+import { resolvers } from '../src/@generated/prisma';
+import { PostResolver } from '../src/database/Post/Post';
+import { UserResolver } from '../src/database/User/User';
 
 const schema = tq.buildSchemaSync({
     resolvers: [...resolvers, PostResolver, UserResolver],
 });
 
-tq.emitSchemaDefinitionFile('./schema.graphql', schema);
+tq.emitSchemaDefinitionFileSync('./schema.graphql', schema);
