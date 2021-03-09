@@ -1,6 +1,32 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import jwt from 'jsonwebtoken';
+import { GraphQLClient } from 'graphql-request';
+
+import { getSdk } from '../../../@generated/sdk';
+
+const gqlClient = new GraphQLClient(process.env.TASKANY_GQL_GATE);
+
+interface JWT {
+    sub: string;
+    name: string;
+    email: string;
+    image: string;
+}
+
+const encodeToken = ({ sub, name, email, image }: JWT) =>
+    jwt.sign(
+        {
+            sub,
+            name,
+            email,
+            image,
+            iat: Date.now() / 1000,
+            exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+        },
+        process.env.TASKANY_JWT_SECRET,
+        { algorithm: 'HS256' },
+    );
 
 export default NextAuth({
     providers: [
@@ -46,27 +72,19 @@ export default NextAuth({
     },
     jwt: {
         secret: process.env.TASKANY_JWT_SECRET,
-        encode: async ({ secret, token }) => {
-            const payload = {
+        encode: async ({ token }) => {
+            return encodeToken({
                 sub: token.sub,
                 name: token.name,
                 email: token.email,
-                picture: token.picture,
-                iat: Date.now() / 1000,
-                exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
-            };
-            const encodedToken = jwt.sign(payload, secret, { algorithm: 'HS256' });
-            return encodedToken;
+                image: token.picture,
+            });
         },
         decode: async ({ secret, token }) => {
             const decodedToken = jwt.verify(token, secret, { algorithms: ['HS256'] });
             return decodedToken;
         },
     },
-
-    // You can define custom pages to override the built-in pages.
-    // The routes shown here are the default URLs that will be used when a custom
-    // pages is not specified for that route.
     // https://next-auth.js.org/configuration/pages
     pages: {
         // signIn: '/api/auth/signin',  // Displays signin buttons
@@ -75,18 +93,36 @@ export default NextAuth({
         // verifyRequest: '/api/auth/verify-request', // Used for check email page
         // newUser: null // If set, new users will be directed here on first sign in
     },
-
-    // Callbacks are asynchronous functions you can use to control what happens
-    // when an action is performed.
     // https://next-auth.js.org/configuration/callbacks
     callbacks: {
-        // async signIn(user, account, profile) { return true },
-        // async redirect(url, baseUrl) { return baseUrl },
-        // async session(session, user) { return session },
-        // async jwt(token, user, account, profile, isNewUser) { return token }
-    },
+        async signIn(user, account, profile) {
+            const token = encodeToken({
+                sub: user.id,
+                name: user.name,
+                email: user.email,
+                image: user.image,
+            });
 
-    // Events are useful for logging
+            gqlClient.setHeader('Authorization', `Bearer ${token}`);
+            const gqlSdk = getSdk(gqlClient);
+
+            const sync = await gqlSdk
+                .signin({
+                    user: { email: user.email, name: user.name, image: user.image },
+                    account: {
+                        providerType: account.type,
+                        providerId: account.provider,
+                        providerAccountId: account.id,
+                    },
+                })
+                .catch((e) => {
+                    // TODO: catch 401
+                    console.error(e);
+                });
+
+            return sync ? sync.signin.email === user.email : false;
+        },
+    },
     // https://next-auth.js.org/configuration/events
     events: {},
 

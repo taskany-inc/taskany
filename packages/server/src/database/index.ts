@@ -4,12 +4,11 @@ import * as tq from 'type-graphql';
 
 import { resolvers } from '../@generated/prisma';
 
-import { PostResolver } from './Post/Post';
 import { UserResolver } from './User/User';
 
 export const buildSchema = () =>
     tq.buildSchemaSync({
-        resolvers: [...resolvers, PostResolver, UserResolver],
+        resolvers: [...resolvers, UserResolver],
     });
 
 const prisma = new PrismaClient();

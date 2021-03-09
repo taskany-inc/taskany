@@ -9,7 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (!token) return res.status(402).send('Access denied');
 
     const apiRes = await redaxios({
-        url: 'http://localhost:4000/graphql',
+        url: process.env.TASKANY_GQL_GATE,
         method: 'post',
         headers: {
             Authorization: `Bearer ${token}`,
