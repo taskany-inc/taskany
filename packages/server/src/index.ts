@@ -16,7 +16,6 @@ passport.use(
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         },
         async (token, done) => {
-            // TODO: https://github.com/taskany-inc/taskany/issues/18
             if (token) {
                 return done(null, token);
             }

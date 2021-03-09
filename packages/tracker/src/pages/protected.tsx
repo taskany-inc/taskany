@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/client';
 
-import { useQuery } from '../@generated/queries';
+// import { useQuery } from '../@generated/queries';
 import Header from '../components/Header/Header';
 
 export default function Page() {
     const [session, loading] = useSession();
     const [content, setContent] = useState();
-    const { data } = useQuery();
+    // const { data } = useQuery();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,7 +40,7 @@ export default function Page() {
             <p>
                 <strong>{content || '\u00a0'}</strong>
             </p>
-            <p>{JSON.stringify(data)}</p>
+            {/* <p>{JSON.stringify(data)}</p> */}
         </>
     );
 }
