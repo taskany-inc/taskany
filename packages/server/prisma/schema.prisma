@@ -7,6 +7,10 @@ generator typegraphql {
   output   = "../src/@generated/prisma"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("TASKANY_DATABASE_URL")
@@ -17,7 +21,7 @@ model Account {
   user               User      @relation(fields: [id], references: [id])
   providerType       String    @map(name: "provider_type")
   providerId         String    @map(name: "provider_id")
-  providerAccountId  Int    @map(name: "provider_account_id")
+  providerAccountId  Int       @map(name: "provider_account_id")
   createdAt          DateTime  @default(now()) @map(name: "created_at")
   updatedAt          DateTime  @default(now()) @map(name: "updated_at")
 
