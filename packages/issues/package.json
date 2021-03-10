@@ -1,6 +1,6 @@
 {
-  "name": "@taskany/tracker",
-  "description": "Taskany Tracker Client",
+  "name": "@taskany/issues",
+  "description": "Taskany Issues",
   "version": "0.1.0",
   "license": "MIT",
   "repository": {
@@ -11,7 +11,7 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
-    "server:queries": "graphql-codegen"
+    "types:queries": "graphql-codegen"
   },
   "dependencies": {
     "@apollo/client": "3.3.11",

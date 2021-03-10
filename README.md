@@ -1,9 +1,8 @@
 # Taskany
 
-The simplest tracker for teams. Love your tasks again.
+The simplest productive tools for teams. Love your job again.
 
 ## Stack
 
 - nextjs + styled-components
-- express + passportjs + postgree + (prisma + TypeGraphQL)
-- react-native
+- express + passportjs + postgree + prisma + TypeGraphQL

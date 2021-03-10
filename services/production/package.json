@@ -1,0 +1,19 @@
+{
+  "name": "@taskany/production",
+  "description": "Taskany Production Setup",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "url": "git@github.com:taskany-inc/taskany.git"
+  },
+  "scripts": {
+    "start:server": "node -r dotenv/config server",
+    "start:issues": "node -r dotenv/config issues"
+  },
+  "dependencies": {
+    "@taskany/server": "*",
+    "@taskany/issues": "*",
+    "dotenv": "8.2.0"
+  },
+  "devDependencies": {}
+}

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import http from 'http';
 import express from 'express';
-import bodyParser from 'body-parser';
+import { urlencoded, json } from 'body-parser';
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { ApolloServer } from 'apollo-server-express';
@@ -23,7 +23,7 @@ passport.use(
     ),
 );
 
-const init = () => {
+export const createTaskanyServer = (/* options */) => () => {
     log.verbose('init graphql server');
     const graphql = new ApolloServer({
         schema: buildSchema(),
@@ -33,8 +33,8 @@ const init = () => {
 
     const app = express();
 
-    app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(bodyParser.json());
+    app.use(urlencoded({ extended: false }));
+    app.use(json());
 
     log.verbose('setup jwt auth');
     app.post(graphql.graphqlPath, passport.authenticate('jwt', { session: false }));
@@ -47,10 +47,12 @@ const init = () => {
     log.verbose('init subscriptions');
     graphql.installSubscriptionHandlers(httpServer);
 
-    httpServer.listen(process.env.TASKANY_PORT, () => {
-        log.info(`server is ready on port: ${process.env.TASKANY_PORT}.`);
+    httpServer.listen(process.env.TASKANY_SERVER_PORT, () => {
+        log.info(`server is ready on port: ${process.env.TASKANY_SERVER_PORT}.`);
         log.info(`graphql gate: ${graphql.graphqlPath}.`);
     });
 };
 
-init();
+if (process.env.NODE_ENV === 'development') {
+    createTaskanyServer()();
+}
