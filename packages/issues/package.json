@@ -7,6 +7,7 @@
     "url": "git@github.com:taskany-inc/taskany.git"
   },
   "scripts": {
+    "postinstall": "npm run types:queries",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
