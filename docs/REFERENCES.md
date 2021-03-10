@@ -7,6 +7,7 @@
 - https://github.com/teenyicons/teenyicons
 - https://github.com/tabler/tabler-icons
 - https://github.com/reakit/reakit
+- https://github.com/enaqx/awesome-react#react-awesome-components
 
 ## Scheduling
 
