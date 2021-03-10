@@ -2,18 +2,18 @@
   "name": "@taskany/server",
   "description": "Taskany GraphQL Server",
   "version": "0.1.0",
+  "main": "dist/index.js",
   "license": "MIT",
   "repository": {
     "url": "git@github.com:taskany-inc/taskany.git"
   },
   "scripts": {
-    "postinstall": "npm-run-all prisma:types graphql:schema",
+    "postinstall": "npm-run-all types:*",
     "test": "jest",
     "dev": "ts-node-dev --no-notify --respawn --transpile-only -r dotenv/config src/index.ts",
-    "db:start": "docker-compose up -d",
-    "db:stop": "docker-compose down",
-    "prisma:types": "npx prisma generate",
-    "graphql:schema": "ts-node ./scripts/generateSchema"
+    "types:prisma": "npx prisma generate",
+    "types:graphql": "ts-node ./scripts/generateSchema",
+    "build": "rm -rf ./dist && npm-run-all types:* && tsc"
   },
   "dependencies": {
     "@prisma/client": "2.17.0",

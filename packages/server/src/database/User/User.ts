@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Resolver, Query, Mutation, Arg, Ctx, Int, InputType, Field } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, Ctx, InputType, Field } from 'type-graphql';
 
 import { User } from '../../@generated/prisma';
 import { Context } from '../../types/context';
