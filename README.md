@@ -1,6 +1,6 @@
 # Taskany
 
-The simplest productive tools for teams. Love your job again.
+The simplest tools for the team productivity. Love your job again ❤️
 
 ## Stack
 
