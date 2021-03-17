@@ -1,8 +1,6 @@
 import { useSession, getSession } from 'next-auth/client';
 import Head from 'next/head';
 
-import Header from '../components/Header/Header';
-
 export default function Home() {
     // As this page uses Server Side Rendering, the `session` will be already
     // populated on render without needing to go through a loading stage.
@@ -14,9 +12,7 @@ export default function Home() {
         <div>
             <Head>
                 <title>Taskany Tracker</title>
-                <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Header />
         </div>
     );
 }

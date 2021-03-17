@@ -13,7 +13,7 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "typeRoots": [
-      "./src/types",
+      "./src/@types",
       "./node_modules/@types"
     ],
     "allowJs": true,
