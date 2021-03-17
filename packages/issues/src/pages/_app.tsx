@@ -1,6 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
 import { Provider as AuthProvider } from 'next-auth/client';
+import Head from 'next/head';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
+import { Header } from '../components/Header/Header';
 
 const client = new ApolloClient({
     uri: '/api/gql',
@@ -12,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Hack, monospace;
   }
 `;
 
@@ -38,7 +42,15 @@ export default function App({ Component, pageProps }) {
                 }}
                 session={pageProps.session}
             >
+                <Head>
+                    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css" />
+                    <link rel="icon" href="/favicon.ico" />
+                </Head>
+
                 <GlobalStyle />
+
+                <Header />
+
                 <Component {...pageProps} />
             </AuthProvider>
         </ApolloProvider>

@@ -1,65 +1,157 @@
+import React from 'react';
+import styled from 'styled-components';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/client';
 
-// The approach used in this component shows how to built a sign in and sign out
-// component that works on pages which support both client and server side
-// rendering, and avoids any flash incorrect content on initial page load.
-export default function Header() {
+import { Icon } from '../Icon/Icon';
+import { Logo } from '../Logo/Logo';
+import { User } from '../User/User';
+import { SearchInput } from '../SearchInput/SearchInput';
+
+const iconProps: Omit<React.ComponentProps<typeof Icon>, 'type'> = {
+    stroke: 1,
+    color: '#fff',
+    size: 's',
+};
+
+const StyledHeader = styled.header`
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+
+    z-index: 1;
+
+    padding: 16px 32px;
+
+    font-size: 14px;
+    line-height: 1.5;
+
+    background-color: #161b22;
+`;
+
+const StyledHeaderItem = styled.div`
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    align-items: center;
+    vertical-align: middle;
+
+    margin-right: 16px;
+`;
+
+const StyledHeaderItemFull = styled(StyledHeaderItem)`
+    flex: auto;
+`;
+
+const StyledHeaderNav = styled.nav`
+    padding: 0 16px;
+
+    font-size: 12px;
+`;
+
+const StyledHeaderLink = styled.a`
+    font-weight: 500;
+    color: #f0f6fc;
+    text-decoration: none;
+    white-space: nowrap;
+
+    cursor: pointer;
+`;
+
+const StyledHeaderIconLink = styled(StyledHeaderLink)`
+    display: flex;
+    align-items: center;
+`;
+
+const StyledHeaderNavLink = styled(StyledHeaderLink)`
+    padding-top: 16px;
+    padding-bottom: 16px;
+    margin-bottom: -16px;
+    margin-top: -16px;
+    margin-right: 16px;
+`;
+
+const StyledUser = styled(User)`
+    display: flex;
+    align-items: center;
+`;
+
+// TODO: move out to User
+const HeaderUser: React.FC = () => {
     const [session, loading] = useSession();
 
+    if (loading) {
+        return <Icon type="user" {...iconProps} />;
+    }
+
+    if (session) {
+        return (
+            <StyledHeaderLink
+                href="/api/auth/signout"
+                onClick={(e) => {
+                    e.preventDefault();
+                    signOut();
+                }}
+            >
+                <StyledUser src={session.user.image} />
+            </StyledHeaderLink>
+        );
+    }
+
     return (
-        <header>
-            <div>
-                <p>
-                    {!session && (
-                        <>
-                            <span>You are not signed in</span>
-                            <a
-                                href="/api/auth/signin"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    signIn();
-                                }}
-                            >
-                                Sign in
-                            </a>
-                        </>
-                    )}
-                    {session && (
-                        <>
-                            {session.user.image && <span style={{ backgroundImage: `url(${session.user.image})` }} />}
-                            <span>
-                                <small>Signed in as</small>
-                                <br />
-                                <strong>{session.user.email || session.user.name}</strong>
-                            </span>
-                            <a
-                                href="/api/auth/signout"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    signOut();
-                                }}
-                            >
-                                Sign out
-                            </a>
-                        </>
-                    )}
-                </p>
-            </div>
-            <nav>
-                <ul>
-                    <li>
-                        <Link href="/">
-                            <a>Home</a>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="/protected">
-                            <a>Protected</a>
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
-        </header>
+        <StyledHeaderNavLink
+            href="/api/auth/signin"
+            onClick={(e) => {
+                e.preventDefault();
+                signIn();
+            }}
+        >
+            Sign in
+        </StyledHeaderNavLink>
     );
-}
+};
+
+export const Header: React.FC = () => {
+    return (
+        <StyledHeader>
+            <StyledHeaderItem>
+                <Logo />
+            </StyledHeaderItem>
+
+            <StyledHeaderItemFull>
+                <SearchInput placeholder="Search" />
+
+                <StyledHeaderNav>
+                    <Link href="/">
+                        <StyledHeaderNavLink>Dashboard</StyledHeaderNavLink>
+                    </Link>
+
+                    <Link href="/issues">
+                        <StyledHeaderNavLink>Issues</StyledHeaderNavLink>
+                    </Link>
+
+                    <Link href="/explore">
+                        <StyledHeaderNavLink>Explore</StyledHeaderNavLink>
+                    </Link>
+                </StyledHeaderNav>
+            </StyledHeaderItemFull>
+
+            <StyledHeaderItem>
+                <Link href="/notifications">
+                    <StyledHeaderIconLink>
+                        <Icon type="bell" {...iconProps} />
+                    </StyledHeaderIconLink>
+                </Link>
+            </StyledHeaderItem>
+
+            <StyledHeaderItem>
+                <Icon type="plus" {...iconProps} />
+            </StyledHeaderItem>
+
+            <StyledHeaderItem>
+                <HeaderUser />
+            </StyledHeaderItem>
+        </StyledHeader>
+    );
+};
