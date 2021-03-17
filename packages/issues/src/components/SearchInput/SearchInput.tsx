@@ -58,6 +58,8 @@ const StyledHeaderInput = styled(Input)`
     ::placeholder {
         opacity: 0.2;
         color: #fff;
+        font-family: Hack, monospace;
+        font-size: 12px;
     }
 `;
 
