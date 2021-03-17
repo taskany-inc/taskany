@@ -59,6 +59,11 @@ const StyledHeaderLink = styled.a`
     cursor: pointer;
 `;
 
+const StyledHeaderIcon = styled(Icon)`
+    display: flex;
+    align-items: center;
+`;
+
 const StyledHeaderIconLink = styled(StyledHeaderLink)`
     display: flex;
     align-items: center;
@@ -82,7 +87,7 @@ const HeaderUser: React.FC = () => {
     const [session, loading] = useSession();
 
     if (loading) {
-        return <Icon type="user" {...iconProps} />;
+        return <StyledHeaderIcon type="user" {...iconProps} />;
     }
 
     if (session) {

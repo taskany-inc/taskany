@@ -30,5 +30,9 @@ export const Icon: React.FC<IconProps> = ({ type, size, color, stroke = 2 }) => 
     const Component = componentsMap[type];
     const sizePx = `${sizesMap[size]}px`;
 
-    return <Component width={sizePx} height={sizePx} color={color} strokeWidth={stroke} />;
+    return (
+        <div>
+            <Component width={sizePx} height={sizePx} color={color} strokeWidth={stroke} />
+        </div>
+    );
 };
