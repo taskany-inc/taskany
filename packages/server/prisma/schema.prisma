@@ -17,29 +17,76 @@ datasource db {
 }
 
 model Account {
-  id                 Int       @default(autoincrement()) @id
-  user               User      @relation(fields: [id], references: [id])
-  providerType       String    @map(name: "provider_type")
-  providerId         String    @map(name: "provider_id")
-  providerAccountId  Int       @map(name: "provider_account_id")
-  createdAt          DateTime  @default(now()) @map(name: "created_at")
-  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+  id                Int      @id @default(autoincrement())
+  user              User     @relation(fields: [id], references: [id])
+  providerType      String   @map(name: "provider_type")
+  providerId        String   @map(name: "provider_id")
+  providerAccountId Int      @map(name: "provider_account_id")
+  createdAt         DateTime @default(now()) @map(name: "created_at")
+  updatedAt         DateTime @default(now()) @map(name: "updated_at")
+
 
   @@index([providerAccountId], name: "providerAccountId")
   @@index([providerId], name: "providerId")
-
   @@map(name: "accounts")
 }
 
 model User {
-  id            Int       @default(autoincrement()) @id
+  id            Int       @id @default(autoincrement())
   name          String?
   email         String?   @unique
   emailVerified DateTime? @map(name: "email_verified")
   image         String?
   accounts      Account[]
+  createdQueues Queue[]   @relation(name: "createdQueues")
+  ownedQueues   Queue[]   @relation(name: "ownedQueues")
+  issues        Issue[]   @relation(name: "createdBy")
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
   @@map(name: "users")
+}
+
+model Queue {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  description String?
+  createdBy   User     @relation(name: "createdQueues", fields: [id], references: [id])
+  owner       User     @relation(name: "ownedQueues", fields: [id], references: [id])
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "queues")
+}
+
+model Issue {
+  id        Int       @id @default(autoincrement())
+  key       String    @unique
+  kind      IssueKind @relation(name: "kind", fields: [id], references: [id])
+  createdBy User      @relation(name: "createdBy", fields: [id], references: [id])
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @default(now()) @map(name: "updated_at")
+
+  @@map(name: "issues")
+}
+
+model IssueKind {
+  id        Int      @id @default(autoincrement())
+  kind      String   @unique
+  issues    Issue[]  @relation(name: "kind")
+  fields    Field[]  @relation(name: "fields")
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "issueKinds")
+}
+
+model Field {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  issueKinds IssueKind[] @relation(name: "fields")
+  createdAt  DateTime    @default(now()) @map(name: "created_at")
+  updatedAt  DateTime    @default(now()) @map(name: "updated_at")
+
+  @@map(name: "fields")
 }
