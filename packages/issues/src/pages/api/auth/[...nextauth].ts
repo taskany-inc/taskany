@@ -77,7 +77,7 @@ export default NextAuth({
                 sub: token.sub,
                 name: token.name,
                 email: token.email,
-                image: token.picture,
+                image: token.image,
             });
         },
         decode: async ({ secret, token }) => {
@@ -121,6 +121,21 @@ export default NextAuth({
                 });
 
             return sync ? sync.signin.email === user.email : false;
+        },
+        async session(session, user) {
+            return {
+                ...session,
+                user: {
+                    ...user,
+                },
+            };
+        },
+        async jwt(token, user, account, profile, isNewUser) {
+            if (user) {
+                token.image = user.image;
+            }
+
+            return token;
         },
     },
     // https://next-auth.js.org/configuration/events
