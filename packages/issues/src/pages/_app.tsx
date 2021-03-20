@@ -1,8 +1,11 @@
+import React, { useLayoutEffect } from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { Provider as AuthProvider } from 'next-auth/client';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { Provider as ReakitSsrProvider } from 'reakit';
+import tinykeys from 'tinykeys';
 
 import { Header } from '../components/Header/Header';
 import { Main } from '../components/Main/Main';
@@ -22,6 +25,20 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export default function App({ Component, pageProps }) {
+    const router = useRouter();
+
+    useLayoutEffect(() => {
+        const unsubscribe = tinykeys(window, {
+            'c q': () => {
+                console.log('redirecting to new queque via hotkey');
+                router.push('/queues/new');
+            },
+        });
+        return () => {
+            unsubscribe();
+        };
+    });
+
     return (
         <ApolloProvider client={client}>
             <AuthProvider
