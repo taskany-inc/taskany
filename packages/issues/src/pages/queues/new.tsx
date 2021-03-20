@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
-import { useSession } from 'next-auth/client';
+import { useSession, getSession } from 'next-auth/client';
+
+import { DialogPage } from '../../components/DialogPage/DialogPage';
 
 // import { useQuery } from '../@generated/queries';
 
@@ -17,5 +19,23 @@ export default function Page() {
         return <h1>Access denied</h1>;
     }
 
-    return <h1>Create new queue</h1>;
+    return (
+        <DialogPage
+            header={
+                <>
+                    <div>Tell us about your queue</div>
+                    <h1>Setup your new queue</h1>
+                </>
+            }
+            content={'form'}
+        />
+    );
+}
+
+export async function getServerSideProps(context) {
+    return {
+        props: {
+            session: await getSession(context),
+        },
+    };
 }

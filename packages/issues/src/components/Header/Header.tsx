@@ -27,6 +27,7 @@ const StyledHeader = styled.header`
 
     font-size: 14px;
     line-height: 1.5;
+    color: #f0f6fc;
 
     background-color: #161b22;
 `;
@@ -51,7 +52,7 @@ const StyledHeaderItemFull = styled(StyledHeaderItem)`
 
 const StyledHeaderLink = styled.a`
     font-weight: 500;
-    color: #f0f6fc;
+    color: inherit;
     text-decoration: none;
     white-space: nowrap;
 
@@ -131,6 +132,18 @@ const HeaderUser: React.FC = () => {
     );
 };
 
+const StyledHeaderCreationMenu = styled.div`
+    color: #161b22;
+`;
+
+const HeaderCreationMenu: React.FC = () => (
+    <StyledHeaderCreationMenu>
+        <Link href="/queues/new">
+            <StyledHeaderNavLink>New queue</StyledHeaderNavLink>
+        </Link>
+    </StyledHeaderCreationMenu>
+);
+
 export const Header: React.FC = () => {
     const dropdownState = useDropdownState();
 
@@ -171,9 +184,7 @@ export const Header: React.FC = () => {
                     <Icon type="plus" {...iconProps} />
                 </DropdownAnchor>
                 <Dropdown {...dropdownState}>
-                    <Link href="/queues/new">
-                        <StyledHeaderNavLink>New queue</StyledHeaderNavLink>
-                    </Link>
+                    <HeaderCreationMenu />
                 </Dropdown>
             </StyledHeaderItem>
 
