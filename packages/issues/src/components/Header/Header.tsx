@@ -170,7 +170,11 @@ export const Header: React.FC = () => {
                 <DropdownAnchor {...dropdownState}>
                     <Icon type="plus" {...iconProps} />
                 </DropdownAnchor>
-                <Dropdown {...dropdownState}>Wow</Dropdown>
+                <Dropdown {...dropdownState}>
+                    <Link href="/queues/new">
+                        <StyledHeaderNavLink>New queue</StyledHeaderNavLink>
+                    </Link>
+                </Dropdown>
             </StyledHeaderItem>
 
             <StyledHeaderItem>
