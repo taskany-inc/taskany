@@ -7,6 +7,7 @@ import { Icon } from '../Icon/Icon';
 import { Logo } from '../Logo/Logo';
 import { User } from '../User/User';
 import { SearchInput } from '../SearchInput/SearchInput';
+import { Dropdown, DropdownAnchor, useDropdownState } from '../Dropdown/Dropdown';
 
 const iconProps: Omit<React.ComponentProps<typeof Icon>, 'type'> = {
     stroke: 1,
@@ -38,16 +39,14 @@ const StyledHeaderItem = styled.div`
     vertical-align: middle;
 
     margin-right: 16px;
+
+    &:last-child {
+        margin-right: 0;
+    }
 `;
 
 const StyledHeaderItemFull = styled(StyledHeaderItem)`
     flex: auto;
-`;
-
-const StyledHeaderNav = styled.nav`
-    padding: 0 16px;
-
-    font-size: 12px;
 `;
 
 const StyledHeaderLink = styled.a`
@@ -74,7 +73,22 @@ const StyledHeaderNavLink = styled(StyledHeaderLink)`
     padding-bottom: 16px;
     margin-bottom: -16px;
     margin-top: -16px;
-    margin-right: 16px;
+
+    font-size: 12px;
+`;
+
+const StyledHeaderNav = styled.nav`
+    padding: 0 16px;
+
+    font-size: 12px;
+
+    ${StyledHeaderLink} {
+        margin-right: 16px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
 `;
 
 const StyledUser = styled(User)`
@@ -118,6 +132,8 @@ const HeaderUser: React.FC = () => {
 };
 
 export const Header: React.FC = () => {
+    const dropdownState = useDropdownState();
+
     return (
         <StyledHeader>
             <StyledHeaderItem>
@@ -151,7 +167,10 @@ export const Header: React.FC = () => {
             </StyledHeaderItem>
 
             <StyledHeaderItem>
-                <Icon type="plus" {...iconProps} />
+                <DropdownAnchor {...dropdownState}>
+                    <Icon type="plus" {...iconProps} />
+                </DropdownAnchor>
+                <Dropdown {...dropdownState}>Wow</Dropdown>
             </StyledHeaderItem>
 
             <StyledHeaderItem>
