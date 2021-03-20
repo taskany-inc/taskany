@@ -1,5 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
+import styled from 'styled-components';
 
 const TreeIcon = dynamic(() => import('./assets/tree.svg'));
 const BellIcon = dynamic(() => import('./assets/bell.svg'));
@@ -26,13 +27,17 @@ interface IconProps {
     stroke?: number;
 }
 
+const StyledIconContainer = styled.div`
+    display: inherit;
+`;
+
 export const Icon: React.FC<IconProps> = ({ type, size, color, stroke = 2 }) => {
     const Component = componentsMap[type];
     const sizePx = `${sizesMap[size]}px`;
 
     return (
-        <div>
+        <StyledIconContainer>
             <Component width={sizePx} height={sizePx} color={color} strokeWidth={stroke} />
-        </div>
+        </StyledIconContainer>
     );
 };
