@@ -5,6 +5,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { Provider as ReakitSsrProvider } from 'reakit';
 
 import { Header } from '../components/Header/Header';
+import { Main } from '../components/Main/Main';
 
 const client = new ApolloClient({
     uri: '/api/gql',
@@ -53,7 +54,9 @@ export default function App({ Component, pageProps }) {
                 <ReakitSsrProvider>
                     <Header />
 
-                    <Component {...pageProps} />
+                    <Main>
+                        <Component {...pageProps} />
+                    </Main>
                 </ReakitSsrProvider>
             </AuthProvider>
         </ApolloProvider>
