@@ -1,6 +1,7 @@
 ## Hotkeys
 
 - https://github.com/jamiebuilds/tinykeys
+- https://github.com/JohannesKlauss/react-hotkeys-hook
 
 ## UI
 
