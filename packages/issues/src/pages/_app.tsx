@@ -2,6 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 import { Provider as AuthProvider } from 'next-auth/client';
 import Head from 'next/head';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { Provider as ReakitSsrProvider } from 'reakit';
 
 import { Header } from '../components/Header/Header';
 
@@ -49,9 +50,11 @@ export default function App({ Component, pageProps }) {
 
                 <GlobalStyle />
 
-                <Header />
+                <ReakitSsrProvider>
+                    <Header />
 
-                <Component {...pageProps} />
+                    <Component {...pageProps} />
+                </ReakitSsrProvider>
             </AuthProvider>
         </ApolloProvider>
     );
