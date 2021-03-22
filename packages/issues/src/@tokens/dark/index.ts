@@ -3,6 +3,8 @@ import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
     :root {
+        --text-font-family: Hack, monospace;
+        --text-font-url: [object Object];
         --text-color-primary: #fff;
         --text-color-secondary: #c9d1d9;
         --text-color-danger: #ff3d3e;

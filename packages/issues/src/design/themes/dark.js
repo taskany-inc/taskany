@@ -1,4 +1,6 @@
 module.exports = {
+    textFontFamily: 'Hack, monospace',
+    textFontUrl: { value: '//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css' },
     textColorPrimary: '#fff',
     textColorSecondary: '#c9d1d9',
     textColorDanger: '#ff3d3e',
