@@ -3,6 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 import { Provider as AuthProvider } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { Provider as ReakitSsrProvider } from 'reakit';
 import tinykeys from 'tinykeys';
@@ -24,6 +25,12 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const themes = {
+    dark: dynamic(() => import('../@tokens/dark')),
+};
+
+const theme: keyof typeof themes = 'dark';
+
 export default function App({ Component, pageProps }) {
     const router = useRouter();
 
@@ -38,6 +45,8 @@ export default function App({ Component, pageProps }) {
             unsubscribe();
         };
     });
+
+    const Theme = themes[theme];
 
     return (
         <ApolloProvider client={client}>
@@ -67,6 +76,8 @@ export default function App({ Component, pageProps }) {
                 </Head>
 
                 <GlobalStyle />
+
+                <Theme />
 
                 <ReakitSsrProvider>
                     <Header />
