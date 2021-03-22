@@ -54,7 +54,7 @@ export default function App({ Component, pageProps }) {
 
                 <GlobalStyle />
 
-                <Theme />
+                <Theme theme="dark" />
 
                 <ReakitSsrProvider>
                     <Header />

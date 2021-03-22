@@ -2,15 +2,13 @@ import React from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 
-import { textFontUrl } from '../../@tokens';
+import { textFontUrl } from '../../@generated/tokens';
 
 const themes = {
-    dark: dynamic(() => import('../../@tokens/dark')),
+    dark: dynamic(() => import('../../@generated/tokens/dark')),
 };
 
-const theme: keyof typeof themes = 'dark';
-
-export const Theme: React.FC = () => {
+export const Theme: React.FC<{ theme: keyof typeof themes }> = ({ theme }) => {
     const ThemeComponent = themes[theme];
 
     return (
