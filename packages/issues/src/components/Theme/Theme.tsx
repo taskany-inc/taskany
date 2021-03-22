@@ -16,6 +16,7 @@ export const Theme: React.FC<{ theme: keyof typeof themes }> = ({ theme }) => {
             <Head>
                 <link rel="stylesheet" href={textFontUrl} />
             </Head>
+
             <ThemeComponent />
         </>
     );
