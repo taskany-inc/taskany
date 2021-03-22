@@ -1,35 +1,15 @@
 import React, { useLayoutEffect } from 'react';
-import { createGlobalStyle } from 'styled-components';
 import { Provider as AuthProvider } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import dynamic from 'next/dynamic';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { Provider as ReakitSsrProvider } from 'reakit';
 import tinykeys from 'tinykeys';
 
+import { GlobalStyle } from '../components/GlobalStyle/GlobalStyle';
+import { Theme } from '../components/Theme/Theme';
+import { Apollo } from '../components/Apollo/Apollo';
 import { Header } from '../components/Header/Header';
 import { Main } from '../components/Main/Main';
-
-const client = new ApolloClient({
-    uri: '/api/gql',
-    cache: new InMemoryCache(),
-});
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Hack, monospace;
-  }
-`;
-
-const themes = {
-    dark: dynamic(() => import('../@tokens/dark')),
-};
-
-const theme: keyof typeof themes = 'dark';
 
 export default function App({ Component, pageProps }) {
     const router = useRouter();
@@ -46,10 +26,8 @@ export default function App({ Component, pageProps }) {
         };
     });
 
-    const Theme = themes[theme];
-
     return (
-        <ApolloProvider client={client}>
+        <Apollo>
             <AuthProvider
                 // Provider options are not required but can be useful in situations where
                 // you have a short session maxAge time. Shown here with default values.
@@ -71,7 +49,6 @@ export default function App({ Component, pageProps }) {
                 session={pageProps.session}
             >
                 <Head>
-                    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css" />
                     <link rel="icon" href="/favicon.png" />
                 </Head>
 
@@ -87,6 +64,6 @@ export default function App({ Component, pageProps }) {
                     </Main>
                 </ReakitSsrProvider>
             </AuthProvider>
-        </ApolloProvider>
+        </Apollo>
     );
 }
