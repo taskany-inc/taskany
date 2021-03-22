@@ -63,7 +63,7 @@ export default function App({ Component, pageProps }) {
             >
                 <Head>
                     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css" />
-                    <link rel="icon" href="/favicon.ico" />
+                    <link rel="icon" href="/favicon.png" />
                 </Head>
 
                 <GlobalStyle />
