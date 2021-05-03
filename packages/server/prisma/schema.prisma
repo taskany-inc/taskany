@@ -7,10 +7,6 @@ generator typegraphql {
   output   = "../src/@generated/prisma"
 }
 
-generator dbml {
-  provider = "prisma-dbml-generator"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("TASKANY_DATABASE_URL")
