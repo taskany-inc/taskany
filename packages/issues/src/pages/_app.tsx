@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }) {
 
             <GlobalStyle />
 
-            <Theme theme="dark" />
+            <Theme theme="light" />
 
             <Apollo>
                 <NextAuth session={pageProps.session}>
