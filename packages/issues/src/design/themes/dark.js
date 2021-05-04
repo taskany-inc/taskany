@@ -3,6 +3,7 @@ module.exports = {
     textFontUrl: { value: '//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css' },
     textColorPrimary: '#fff',
     textColorSecondary: '#c9d1d9',
+    textColorTertiary: '#6a737d',
     textColorDanger: '#ff3d3e',
     textColorDescription: '#8b949e',
     backgroundColorPrimary: '#161b22',
