@@ -13,6 +13,7 @@ const writeToShadowDir = (file, content) =>
 const themesFolder = join(process.cwd(), 'src', '@generated', 'tokens');
 const themes = {
     dark: require('../src/design/themes/dark'),
+    light: require('../src/design/themes/light'),
 };
 
 const jsToken = (token, value, { noVar }) =>

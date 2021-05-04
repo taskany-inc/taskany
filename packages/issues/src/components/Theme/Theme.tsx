@@ -6,6 +6,7 @@ import { textFontUrl } from '../../@generated/tokens';
 
 const themes = {
     dark: dynamic(() => import('../../@generated/tokens/dark')),
+    light: dynamic(() => import('../../@generated/tokens/light')),
 };
 
 export const Theme: React.FC<{ theme: keyof typeof themes }> = ({ theme }) => {
