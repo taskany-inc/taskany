@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSession, getSession } from 'next-auth/client';
 
 import { DialogPage } from '../../components/DialogPage/DialogPage';
-import { Form, useFormState } from '../../components/Form/Form';
+import { Form, useFormState, FormErrors } from '../../components/Form/Form';
 import { ButtonSubmit } from '../../components/Button/_submit/Button_submit';
 
 // import { useQuery } from '../@generated/queries';
@@ -29,7 +29,7 @@ const PageContent: React.FC = () => {
             },
         },
         onValidate(fields) {
-            const errors: Partial<Record<keyof typeof fields, string>> = {};
+            const errors: FormErrors<typeof fields> = {};
             if (fields.name !== 'ccc') {
                 errors.name = 'Error!';
                 throw errors;
@@ -41,11 +41,9 @@ const PageContent: React.FC = () => {
     });
 
     return (
-        <>
-            <Form {...state}>
-                <ButtonSubmit {...state} text="Create" view="primary" />
-            </Form>
-        </>
+        <Form {...state}>
+            <ButtonSubmit {...state} text="Create" view="primary" />
+        </Form>
     );
 };
 

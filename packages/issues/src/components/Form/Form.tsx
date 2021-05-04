@@ -37,6 +37,8 @@ interface FormStateProps<F extends FieldsMap> {
     onSubmit?: (values: Record<keyof F, unknown>) => void;
 }
 
+export type FormErrors<F> = Partial<Record<keyof F, string>>;
+
 const StyledLabel = styled(unstable_FormLabel)<{ required?: boolean; error?: boolean }>`
     display: block;
     padding-bottom: 5px;
