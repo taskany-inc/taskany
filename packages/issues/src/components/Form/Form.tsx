@@ -11,6 +11,7 @@ import { textColorDanger, textColorSecondary } from '@/generated/tokens';
 
 import { is } from '../../utils/styles';
 import { Input } from '../../components/Input/Input';
+import { TextArea } from '../TextArea/TextArea';
 
 interface FormFieldProps {
     type: keyof typeof supportedFormFieldControls;
@@ -85,6 +86,7 @@ const StyledFormActions = styled.div`
 
 const supportedFormFieldControls = {
     input: Input,
+    textarea: TextArea,
 };
 
 const FormField: React.FC<FormFieldProps> = ({ name, required, label, placeholder, info, type, state }) => {
@@ -94,10 +96,10 @@ const FormField: React.FC<FormFieldProps> = ({ name, required, label, placeholde
 
     return (
         <StyledFormField>
-            <StyledLabel {...state} required={required} error={invalid}>
+            <StyledLabel {...state} required={required} error={invalid} htmlFor={name}>
                 {label}
             </StyledLabel>
-            <Control {...state} name={name} placeholder={placeholder} error={invalid} />
+            <Control {...state} name={name} placeholder={placeholder} error={invalid} id={name} />
             {infoMessage && <StyledFormFieldInfo>{infoMessage}</StyledFormFieldInfo>}
         </StyledFormField>
     );
