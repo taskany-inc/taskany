@@ -36,7 +36,7 @@ export default function Page() {
                 placeholder: 'ololol',
             },
             description: {
-                type: 'input',
+                type: 'textarea',
                 label: 'Description',
             },
         },
