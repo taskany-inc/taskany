@@ -1,8 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { unstable_FormInput as ReakitInput } from 'reakit/Form';
-
-import { is } from '../../utils/styles';
 import {
     inputTextColor,
     inputBackgroundColor,
@@ -12,7 +10,10 @@ import {
     inputBoxShadowColor,
     inputBoxShadowColorFocus,
     textColorDanger,
-} from '../../@generated/tokens';
+} from '@/generated/tokens';
+
+import { is } from '../../utils/styles';
+
 
 type InputProps = React.ComponentProps<typeof ReakitInput> & {
     error?: boolean;

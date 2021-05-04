@@ -7,10 +7,10 @@ import {
     unstable_Form,
     unstable_FormLabel,
 } from 'reakit/Form';
+import { textColorDanger, textColorSecondary } from '@/generated/tokens';
 
 import { is } from '../../utils/styles';
 import { Input } from '../../components/Input/Input';
-import { textColorDanger, textColorSecondary } from '../../@generated/tokens';
 
 interface FormFieldProps {
     type: keyof typeof supportedFormFieldControls;
