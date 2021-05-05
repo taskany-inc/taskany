@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useSession, getSession } from 'next-auth/client';
+import * as zod from 'zod';
 
 import { H1, Hi } from '../../components/Typo/Typo';
 import {
@@ -8,7 +9,7 @@ import {
     DialogPageHeader,
     DialogPageContent,
 } from '../../components/DialogPage/DialogPage';
-import { Form, useFormState, FormErrors } from '../../components/Form/Form';
+import { Form, useFormState, schema } from '../../components/Form/Form';
 import { ButtonSubmit } from '../../components/Button/_submit/Button_submit';
 
 // import { useQuery } from '../@generated/queries';
@@ -31,21 +32,15 @@ export default function Page() {
         fields: {
             name: {
                 type: 'input',
-                required: true,
                 label: 'Queue name',
                 placeholder: 'ololol',
+                schema: schema.string().length(3, { message: 'WOW!' }),
             },
             description: {
                 type: 'textarea',
                 label: 'Description',
+                schema: schema.string().optional(),
             },
-        },
-        onValidate(fields) {
-            const errors: FormErrors<typeof fields> = {};
-            if (fields.name !== 'ccc') {
-                errors.name = 'Error!';
-                throw errors;
-            }
         },
         onSubmit(fields) {
             console.log('submit!', fields);

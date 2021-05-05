@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 import React from 'react';
 import styled, { css } from 'styled-components';
 import {
@@ -7,6 +8,7 @@ import {
     unstable_Form,
     unstable_FormLabel,
 } from 'reakit/Form';
+import * as zod from 'zod';
 import { textColorDanger, textColorSecondary } from '@/generated/tokens';
 
 import { is } from '../../utils/styles';
@@ -22,6 +24,7 @@ interface FormFieldProps {
     value?: any;
     placeholder?: string;
     info?: string;
+    schema?: zod.ZodType<any>;
 }
 
 export interface FormProps {
@@ -89,14 +92,20 @@ const supportedFormFieldControls = {
     textarea: TextArea,
 };
 
-const FormField: React.FC<FormFieldProps> = ({ name, required, label, placeholder, info, type, state }) => {
+const isRequiredField = (schema: zod.ZodObject<any>, name: string) =>
+    !schema.shape[name]?._def.options
+        ? true
+        : !schema.shape[name]._def.options.filter((s) => s._def.t === 'undefined').length;
+
+const FormField: React.FC<FormFieldProps> = ({ name, required, label, placeholder, info, type, state, schema }) => {
     const Control = supportedFormFieldControls[type];
     const invalid = Boolean(state.errors[name]) || undefined;
     const infoMessage = state.errors[name] || info;
+    const isRequired = schema ? isRequiredField(zod.object({ [name]: schema }), name) : required;
 
     return (
         <StyledFormField>
-            <StyledLabel {...state} required={required} error={invalid} htmlFor={name}>
+            <StyledLabel {...state} required={isRequired} error={invalid} htmlFor={name}>
                 {label}
             </StyledLabel>
             <Control {...state} name={name} placeholder={placeholder} error={invalid} id={name} />
@@ -122,10 +131,36 @@ export function useFormState<F extends FieldsMap>(props: FormStateProps<F>) {
     });
 
     const state = unstable_useFormState({
-        values,
+        values: values as F,
         validateOnBlur: props.validateOnBlur,
         validateOnChange: props.validateOnChange,
-        onValidate: props.onValidate,
+        onValidate: (v: F) => {
+            const shape = {};
+            Object.keys(props.fields).forEach((name) => {
+                if (props.fields[name].schema) {
+                    shape[name] = props.fields[name].schema;
+                }
+            });
+
+            if (Object.keys(shape).length) {
+                const schema = zod.object(shape);
+                const preValidation = schema.nonstrict().safeParse(v);
+
+                if (preValidation.success && props.onValidate) {
+                    return props.onValidate(v);
+                }
+
+                const errors = {};
+                for (const { path, message } of (preValidation as { success: false; error: zod.ZodError }).error
+                    .errors) {
+                    // TODO: support deep schemas
+                    errors[path[0]] = message;
+                }
+                throw errors;
+            } else if (props.onValidate) {
+                return props.onValidate(v);
+            }
+        },
         onSubmit: props.onSubmit,
     });
 
@@ -137,3 +172,5 @@ export function useFormState<F extends FieldsMap>(props: FormStateProps<F>) {
 
     return { fields, state };
 }
+
+export const schema = zod;
