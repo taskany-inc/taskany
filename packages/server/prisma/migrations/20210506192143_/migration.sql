@@ -1,13 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Post` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "Post" DROP CONSTRAINT "Post_authorId_fkey";
-
 -- CreateTable
 CREATE TABLE "accounts" (
     "id" SERIAL NOT NULL,
@@ -33,11 +23,18 @@ CREATE TABLE "users" (
     PRIMARY KEY ("id")
 );
 
--- DropTable
-DROP TABLE "Post";
+-- CreateTable
+CREATE TABLE "queues" (
+    "id" SERIAL NOT NULL,
+    "key" TEXT NOT NULL,
+    "description" TEXT,
+    "creatorId" INTEGER NOT NULL,
+    "ownerId" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
--- DropTable
-DROP TABLE "User";
+    PRIMARY KEY ("id")
+);
 
 -- CreateIndex
 CREATE INDEX "providerAccountId" ON "accounts"("provider_account_id");
@@ -48,5 +45,14 @@ CREATE INDEX "providerId" ON "accounts"("provider_id");
 -- CreateIndex
 CREATE UNIQUE INDEX "users.email_unique" ON "users"("email");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "queues.key_unique" ON "queues"("key");
+
 -- AddForeignKey
 ALTER TABLE "accounts" ADD FOREIGN KEY ("id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "queues" ADD FOREIGN KEY ("creatorId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "queues" ADD FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

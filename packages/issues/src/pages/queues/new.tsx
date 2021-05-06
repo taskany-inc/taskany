@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { useCreateQueueMutation } from '@/generated/queries';
 
 import { H1, Hi } from '../../components/Typo/Typo';
@@ -14,6 +15,7 @@ import { defaultPageProps } from '../../hooks/defaultPageProps';
 
 export const getServerSideProps = defaultPageProps;
 export default function Page() {
+    const router = useRouter();
     const [createQueueMutation] = useCreateQueueMutation();
 
     const queueSchema = schema.object({
@@ -37,18 +39,14 @@ export default function Page() {
             },
         },
         schema: queueSchema,
-        async onSubmit(queue: Q) {
-            console.log('submit!', queue);
-
-            const { data, errors } = await createQueueMutation({
-                variables: { queue: { key: queue.key } },
+        async onSubmit(queue: Required<Q>) {
+            const { data } = await createQueueMutation({
+                variables: { queue },
             });
 
-            console.log('res', data, errors);
+            router.push(`/queues/${data.createQueue.key}`);
         },
     });
-
-    console.log(form);
 
     return (
         <DialogPage>
