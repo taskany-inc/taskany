@@ -8,12 +8,13 @@
     "url": "git@github.com:taskany-inc/taskany.git"
   },
   "scripts": {
-    "postinstall": "npm-run-all types:*",
+    "postinstall": "npm run types",
+    "types": "npm-run-all types:*",
     "test": "jest",
     "dev": "ts-node-dev --no-notify --respawn --transpile-only -r dotenv/config src/index.ts",
     "types:prisma": "npx prisma generate",
     "types:graphql": "ts-node ./scripts/generateSchema",
-    "build": "rm -rf ./dist && npm-run-all types:* && tsc"
+    "build": "rm -rf ./dist && npm run types && tsc"
   },
   "dependencies": {
     "@prisma/client": "2.21.2",
