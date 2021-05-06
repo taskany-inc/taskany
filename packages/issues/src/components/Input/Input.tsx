@@ -14,12 +14,11 @@ import {
 
 import { is } from '../../utils/styles';
 
-
 type InputProps = React.ComponentProps<typeof ReakitInput> & {
     error?: boolean;
 };
 
-const StyledInput = styled(ReakitInput)<InputProps>`
+const StyledInput = styled(({ error, forwardAs, ...props }) => <ReakitInput as={forwardAs} {...props} />)<InputProps>`
     width: 100%;
     padding: 5px 12px;
     vertical-align: middle;

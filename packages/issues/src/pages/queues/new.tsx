@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-import { useSession, getSession } from 'next-auth/client';
-import * as zod from 'zod';
+import React from 'react';
+import { useCreateQueueMutation } from '@/generated/queries';
 
 import { H1, Hi } from '../../components/Typo/Typo';
 import {
@@ -11,41 +10,45 @@ import {
 } from '../../components/DialogPage/DialogPage';
 import { Form, useFormState, schema } from '../../components/Form/Form';
 import { ButtonSubmit } from '../../components/Button/_submit/Button_submit';
+import { defaultPageProps } from '../../hooks/defaultPageProps';
 
-// import { useQuery } from '../@generated/queries';
-
+export const getServerSideProps = defaultPageProps;
 export default function Page() {
-    const [session, loading] = useSession();
-    // const { data } = useQuery();
+    const [createQueueMutation] = useCreateQueueMutation();
 
-    useEffect(() => {}, [session]);
+    const queueSchema = schema.object({
+        key: schema.string(),
+        description: schema.string().optional(),
+    });
 
-    // When rendering client side don't display anything until loading is complete
-    if (typeof window !== 'undefined' && loading) return null;
+    // FIXME: all optional fields is not expected result. https://github.com/colinhacks/zod/discussions/426
+    type Q = schema.infer<typeof queueSchema>;
 
-    // If no session exists, display access denied message
-    if (!session) {
-        return <h1>Access denied</h1>;
-    }
-
-    const state = useFormState({
+    const form = useFormState({
         fields: {
-            name: {
+            key: {
                 type: 'input',
-                label: 'Queue name',
+                label: 'Queue key',
                 placeholder: 'ololol',
-                schema: schema.string().length(3, { message: 'WOW!' }),
             },
             description: {
                 type: 'textarea',
                 label: 'Description',
-                schema: schema.string().optional(),
             },
         },
-        onSubmit(fields) {
-            console.log('submit!', fields);
+        schema: queueSchema,
+        async onSubmit(queue: Q) {
+            console.log('submit!', queue);
+
+            const { data, errors } = await createQueueMutation({
+                variables: { queue: { key: queue.key } },
+            });
+
+            console.log('res', data, errors);
         },
     });
+
+    console.log(form);
 
     return (
         <DialogPage>
@@ -55,18 +58,10 @@ export default function Page() {
                 <H1>Setup your new queue</H1>
             </DialogPageHeader>
             <DialogPageContent>
-                <Form {...state}>
-                    <ButtonSubmit {...state} text="Create" view="primary" />
+                <Form {...form}>
+                    <ButtonSubmit {...form} text="Create" view="primary" />
                 </Form>
             </DialogPageContent>
         </DialogPage>
     );
-}
-
-export async function getServerSideProps(context) {
-    return {
-        props: {
-            session: await getSession(context),
-        },
-    };
 }

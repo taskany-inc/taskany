@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-else-return */
 import React from 'react';
 import styled, { css } from 'styled-components';
@@ -5,8 +6,8 @@ import {
     unstable_FormState,
     unstable_useFormState,
     unstable_FormInitialState,
-    unstable_Form,
-    unstable_FormLabel,
+    unstable_Form as ReakitForm,
+    unstable_FormLabel as ReakitLabel,
 } from 'reakit/Form';
 import * as zod from 'zod';
 import { textColorDanger, textColorSecondary } from '@/generated/tokens';
@@ -24,7 +25,7 @@ interface FormFieldProps {
     value?: any;
     placeholder?: string;
     info?: string;
-    schema?: zod.ZodType<any>;
+    schema?: zod.ZodObject<any>;
 }
 
 export interface FormProps {
@@ -37,13 +38,17 @@ interface FormStateProps<F extends FieldsMap> {
     fields: F;
     validateOnBlur?: boolean;
     validateOnChange?: boolean;
-    onValidate?: (values: Record<keyof F, unknown>) => ReturnType<unstable_FormInitialState<any>['onValidate']>;
-    onSubmit?: (values: Record<keyof F, unknown>) => void;
+    schema?: zod.ZodObject<any>;
+    onValidate?: (values: any) => ReturnType<unstable_FormInitialState<any>['onValidate']>;
+    onSubmit?: (values: any) => void;
 }
 
 export type FormErrors<F> = Partial<Record<keyof F, string>>;
 
-const StyledLabel = styled(unstable_FormLabel)<{ required?: boolean; error?: boolean }>`
+const StyledLabel = styled(({ error, ...props }) => <ReakitLabel {...props} />)<{
+    required?: boolean;
+    error?: boolean;
+}>`
     display: block;
     padding-bottom: 5px;
     font-size: 14px;
@@ -79,7 +84,7 @@ const StyledFormField = styled.div`
     padding: 15px 0;
 `;
 
-const StyledForm = styled(unstable_Form)`
+const StyledForm = styled(ReakitForm)`
     max-width: 440px;
 `;
 
@@ -101,7 +106,7 @@ const FormField: React.FC<FormFieldProps> = ({ name, required, label, placeholde
     const Control = supportedFormFieldControls[type];
     const invalid = Boolean(state.errors[name]) || undefined;
     const infoMessage = state.errors[name] || info;
-    const isRequired = schema ? isRequiredField(zod.object({ [name]: schema }), name) : required;
+    const isRequired = schema ? isRequiredField(schema, name) : required;
 
     return (
         <StyledFormField>
@@ -135,19 +140,12 @@ export function useFormState<F extends FieldsMap>(props: FormStateProps<F>) {
         validateOnBlur: props.validateOnBlur,
         validateOnChange: props.validateOnChange,
         onValidate: (v: F) => {
-            const shape = {};
-            Object.keys(props.fields).forEach((name) => {
-                if (props.fields[name].schema) {
-                    shape[name] = props.fields[name].schema;
-                }
-            });
+            if (props.schema) {
+                const { schema } = props;
+                const preValidation = schema.safeParse(v);
 
-            if (Object.keys(shape).length) {
-                const schema = zod.object(shape);
-                const preValidation = schema.nonstrict().safeParse(v);
-
-                if (preValidation.success && props.onValidate) {
-                    return props.onValidate(v);
+                if (preValidation.success) {
+                    return props.onValidate ? props.onValidate(v) : null;
                 }
 
                 const errors = {};
@@ -157,8 +155,8 @@ export function useFormState<F extends FieldsMap>(props: FormStateProps<F>) {
                     errors[path[0]] = message;
                 }
                 throw errors;
-            } else if (props.onValidate) {
-                return props.onValidate(v);
+            } else {
+                return props.onValidate ? props.onValidate(v) : null;
             }
         },
         onSubmit: props.onSubmit,
@@ -168,9 +166,10 @@ export function useFormState<F extends FieldsMap>(props: FormStateProps<F>) {
     Object.keys(state.values).forEach((name) => {
         fields[name].name = name;
         fields[name].state = state;
+        fields[name].schema = props.schema;
     });
 
     return { fields, state };
 }
 
-export const schema = zod;
+export * as schema from 'zod';
