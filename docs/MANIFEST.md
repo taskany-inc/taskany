@@ -7,8 +7,8 @@ Taskany — the simplest task tracker for teams.  Features with the human face. 
 ## Religion
 
 - simplicity over any other things
-- no custom technologies, formatters and languages
-- webhooks API first
+- no custom technologies
+- API first
 - it works out of the box
 
 ## Key features
@@ -23,14 +23,11 @@ Taskany — the simplest task tracker for teams.  Features with the human face. 
 - external data providers: github, jira, trello
 - custom filter based board colums
 - abstract notes in board colums
-- cli tool to get issues and other
+- realtime issue updates: comments, edits and etc
 - hotkeys based UI
-- tokens based UI themes
-
-## MVP Scope
+- cli tool to get issues and other
+- any platform access
 
 ## References
 
 - https://www.basetemplates.com/investor-pitch-training — all the time try to answer to all questions
-- https://github.com/strapi/strapi - as architecrure and the path to growth
-- https://github.com/outline/outline - as minimalistic ui example
