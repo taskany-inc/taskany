@@ -114,7 +114,7 @@ const HeaderUser: React.FC = () => {
                     signOut();
                 }}
             >
-                <StyledUser src={session.user.image} />
+                <StyledUser src={session.user?.image} />
             </StyledHeaderLink>
         );
     }
