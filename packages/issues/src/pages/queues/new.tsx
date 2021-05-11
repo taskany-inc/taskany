@@ -1,7 +1,7 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import { useCreateQueueMutation } from '@/generated/queries';
 
+import { useRouter } from '../../utils/router';
 import { H1, Hi } from '../../components/Typo/Typo';
 import {
     DialogPage,
@@ -44,7 +44,7 @@ export default function Page() {
                 variables: { queue },
             });
 
-            router.push(`/queues/${data.createQueue.key}`);
+            router.queue(data.createQueue.key);
         },
     });
 
