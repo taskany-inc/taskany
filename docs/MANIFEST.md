@@ -26,8 +26,9 @@ Taskany — the simplest task tracker for teams.  Features with the human face. 
 - realtime issue updates: comments, edits and etc
 - hotkeys based UI
 - cli tool to get issues and other
-- any platform access
+- all platforms support
 
 ## References
 
 - https://www.basetemplates.com/investor-pitch-training — all the time try to answer to all questions
+- https://clickup.com/ - the closest analog
