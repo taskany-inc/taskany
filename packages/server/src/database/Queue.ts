@@ -27,8 +27,6 @@ export class QueueResolver {
             creatorId: user.id,
         };
 
-        console.log('data', ctx.req.user, data);
-
         return ctx.prisma.queue.create({
             data,
         });

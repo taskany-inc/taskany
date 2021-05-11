@@ -23,7 +23,6 @@ export default function Page() {
         description: schema.string().optional(),
     });
 
-    // FIXME: all optional fields is not expected result. https://github.com/colinhacks/zod/discussions/426
     type Q = schema.infer<typeof queueSchema>;
 
     const form = useFormState({
@@ -31,7 +30,7 @@ export default function Page() {
             key: {
                 type: 'input',
                 label: 'Queue key',
-                placeholder: 'ololol',
+                placeholder: 'FRN',
             },
             description: {
                 type: 'textarea',
@@ -39,12 +38,13 @@ export default function Page() {
             },
         },
         schema: queueSchema,
-        async onSubmit(queue: Required<Q>) {
+        async onSubmit(queue: Q) {
             const { data } = await createQueueMutation({
                 variables: { queue },
             });
 
-            router.queue(data.createQueue.key);
+            // TODO: https://github.com/productivity-tools/taskany/issues/90
+            if (data) router.push(`/queues/${data.createQueue.key}`);
         },
     });
 
