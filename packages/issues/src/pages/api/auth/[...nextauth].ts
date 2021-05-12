@@ -1,20 +1,22 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import NextAuth from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import Providers from 'next-auth/providers';
 import jwt from 'jsonwebtoken';
 import { GraphQLClient } from 'graphql-request';
+import { getSdk } from '@/generated/sdk';
+import { User } from '@/generated/queries';
 
-import { getSdk } from '../../../@generated/sdk';
+const gqlClient = new GraphQLClient(process.env.TASKANY_GQL_GATE!);
 
-const gqlClient = new GraphQLClient(process.env.TASKANY_GQL_GATE);
-
-interface JWT {
+interface ProjectJWT extends JWT {
     sub: string;
     name: string;
     email: string;
     image: string;
 }
 
-const encodeToken = ({ sub, name, email, image }: JWT) =>
+const encodeToken = ({ sub, name, email, image }: ProjectJWT) =>
     jwt.sign(
         {
             sub,
@@ -24,11 +26,12 @@ const encodeToken = ({ sub, name, email, image }: JWT) =>
             iat: Date.now() / 1000,
             exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
         },
-        process.env.TASKANY_JWT_SECRET,
+        process.env.TASKANY_JWT_SECRET!,
         { algorithm: 'HS256' },
     );
 
 export default NextAuth({
+    // @ts-ignore
     providers: [
         process.env.EMAIL_SERVER &&
             Providers.Email({
@@ -40,9 +43,9 @@ export default NextAuth({
                 clientId: process.env.TASKANY_APPLE_ID,
                 clientSecret: {
                     appleId: process.env.TASKANY_APPLE_ID,
-                    teamId: process.env.TASKANY_APPLE_TEAM_ID,
-                    privateKey: process.env.TASKANY_APPLE_PRIVATE_KEY,
-                    keyId: process.env.TASKANY_APPLE_KEY_ID,
+                    teamId: process.env.TASKANY_APPLE_TEAM_ID!,
+                    privateKey: process.env.TASKANY_APPLE_PRIVATE_KEY!,
+                    keyId: process.env.TASKANY_APPLE_KEY_ID!,
                 },
             }),
         process.env.TASKANY_FACEBOOK_ID &&
@@ -72,17 +75,34 @@ export default NextAuth({
     },
     jwt: {
         secret: process.env.TASKANY_JWT_SECRET,
-        encode: async ({ token }) => {
-            return encodeToken({
-                sub: token.sub,
-                name: token.name,
-                email: token.email,
-                image: token.image,
-            });
+        encode: async (encodeParams) => {
+            if (encodeParams && encodeParams.token) {
+                const { token } = encodeParams;
+
+                return encodeToken({
+                    sub: token.sub!,
+                    name: token.name!,
+                    email: token.email!,
+                    image: token.image as string,
+                });
+            }
+
+            return 'error';
         },
-        decode: async ({ secret, token }) => {
-            const decodedToken = jwt.verify(token, secret, { algorithms: ['HS256'] });
-            return decodedToken;
+        decode: async (decodeParams) => {
+            if (decodeParams && decodeParams.token) {
+                const { secret, token } = decodeParams;
+                const decodedToken = jwt.verify(token, secret, { algorithms: ['HS256'] }) as JWT;
+
+                return decodedToken;
+            }
+
+            return {
+                sub: 'unrecognized',
+                name: 'unrecognized',
+                email: 'unrecognized',
+                image: 'unrecognized',
+            };
         },
     },
     // https://next-auth.js.org/configuration/pages
@@ -95,12 +115,12 @@ export default NextAuth({
     },
     // https://next-auth.js.org/configuration/callbacks
     callbacks: {
-        async signIn(user, account, profile) {
+        async signIn(user: User, account) {
             const token = encodeToken({
-                sub: user.id,
-                name: user.name,
-                email: user.email,
-                image: user.image,
+                sub: String(user.id),
+                name: user.name!,
+                email: user.email!,
+                image: user.image!,
             });
 
             gqlClient.setHeader('Authorization', `Bearer ${token}`);
@@ -108,11 +128,11 @@ export default NextAuth({
 
             const sync = await gqlSdk
                 .signin({
-                    user: { email: user.email, name: user.name, image: user.image },
+                    user: { email: user.email!, name: user.name!, image: user.image! },
                     account: {
                         providerType: account.type,
                         providerId: account.provider,
-                        providerAccountId: account.id,
+                        providerAccountId: Number(account.id),
                     },
                 })
                 .catch((e) => {
@@ -130,7 +150,7 @@ export default NextAuth({
                 },
             };
         },
-        async jwt(token, user, account, profile, isNewUser) {
+        async jwt(token, user) {
             if (user) {
                 token.image = user.image;
             }
@@ -141,5 +161,5 @@ export default NextAuth({
     // https://next-auth.js.org/configuration/events
     events: {},
 
-    debug: process.env.DEBUG,
+    debug: Boolean(process.env.DEBUG),
 });
