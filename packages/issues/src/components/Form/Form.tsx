@@ -34,12 +34,14 @@ export interface FormProps {
 }
 
 type FieldsMap = Record<string, FormFieldProps>;
+
+type onOriginValidate = unstable_FormInitialState<any>['onValidate'];
 interface FormStateProps<F extends FieldsMap> {
     fields: F;
     validateOnBlur?: boolean;
     validateOnChange?: boolean;
     schema?: zod.ZodObject<any>;
-    onValidate?: (values: any) => ReturnType<unstable_FormInitialState<any>['onValidate']>;
+    onValidate?: (values: any) => ReturnType<NonNullable<onOriginValidate>>;
     onSubmit?: (values: any) => void;
 }
 
@@ -104,9 +106,9 @@ const isRequiredField = (schema: zod.ZodObject<any>, name: string) =>
 
 const FormField: React.FC<FormFieldProps> = ({ name, required, label, placeholder, info, type, state, schema }) => {
     const Control = supportedFormFieldControls[type];
-    const invalid = Boolean(state.errors[name]) || undefined;
-    const infoMessage = state.errors[name] || info;
-    const isRequired = schema ? isRequiredField(schema, name) : required;
+    const invalid = state && name ? Boolean(state.errors[name]) || undefined : false;
+    const infoMessage = state && name ? state.errors[name] || info : info;
+    const isRequired = schema && name ? isRequiredField(schema, name) : required;
 
     return (
         <StyledFormField>

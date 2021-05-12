@@ -44,7 +44,7 @@ export default function Page() {
             });
 
             // TODO: https://github.com/productivity-tools/taskany/issues/90
-            if (data) router.push(`/queues/${data.createQueue.key}`);
+            if (data) router.queue(data.createQueue.key);
         },
     });
 
