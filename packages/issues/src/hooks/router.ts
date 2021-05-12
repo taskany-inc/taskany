@@ -6,6 +6,8 @@ export const useRouter = () => {
     return {
         index: () => router.push('/'),
         queue: (id: string) => router.push(`/queues/${id}`),
-        issues: (id: string) => router.push(`/issues/${id}`),
+        createQueue: () => router.push('/queues/new'),
+        issue: (id: string) => router.push(`/issues/${id}`),
+        createIssue: () => router.push('/issues/new'),
     };
 };

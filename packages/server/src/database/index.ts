@@ -7,10 +7,11 @@ import { TaskanyRequest } from '../types/context';
 
 import { UserResolver } from './User';
 import { QueueResolver } from './Queue';
+import { IssueResolver } from './Issue';
 
 export const buildSchema = () =>
     tq.buildSchemaSync({
-        resolvers: [...resolvers, UserResolver, QueueResolver],
+        resolvers: [...resolvers, UserResolver, QueueResolver, IssueResolver],
     });
 
 const prisma = new PrismaClient();

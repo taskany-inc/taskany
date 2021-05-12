@@ -21,14 +21,13 @@ export class QueueResolver {
         const { resolvedUser: user } = ctx.req;
         if (!user) return { code: 401, message: 'Unauthorized' };
 
-        const data = {
-            ...queue,
-            ownerId: user.id,
-            creatorId: user.id,
-        };
-
         return ctx.prisma.queue.create({
-            data,
+            data: {
+                ...queue,
+                key: queue.key.toUpperCase(),
+                ownerId: user.id,
+                creatorId: user.id,
+            },
         });
     }
 }

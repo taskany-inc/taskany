@@ -1,16 +1,15 @@
-import { useLayoutEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import tinykeys from 'tinykeys';
+
+import { useRouter } from './router';
 
 export const useHotkeys = () => {
     const router = useRouter();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const unsubscribe = tinykeys(window, {
-            'c q': () => {
-                console.log('redirecting to new queque via hotkey');
-                router.push('/queues/new');
-            },
+            'c q': () => router.createQueue(),
+            'c i': () => router.createIssue(),
         });
         return () => {
             unsubscribe();

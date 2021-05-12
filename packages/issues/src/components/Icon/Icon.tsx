@@ -14,7 +14,7 @@ const componentsMap = {
 };
 
 const sizesMap = {
-    s: 24,
+    s: 16,
     m: 32,
     l: 48,
 };
