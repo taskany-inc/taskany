@@ -2,14 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
 
-const StyledDialogPage = styled.div`
-    padding-top: 64px;
-`;
+const StyledDialogPage = styled.div``;
 const StyledDialogPageHeader = styled.div`
-    padding-bottom: 64px;
+    padding: 32px;
+    margin-bottom: 32px;
+    background-color: #fafbfc;
+    box-shadow: inset 0 -1px 0 #eaecef;
 `;
-const StyledDialogPageContent = styled.div``;
-const StyledDialogPageFooter = styled.div``;
+const StyledDialogPageContent = styled.div`
+    padding: 0 32px;
+`;
+const StyledDialogPageFooter = styled.div`
+    padding: 0 32px;
+`;
 
 export const DialogPage: React.FC = ({ children }) => <StyledDialogPage>{children}</StyledDialogPage>;
 

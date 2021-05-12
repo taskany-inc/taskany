@@ -28,4 +28,7 @@ module.exports = {
     inputBackgroundColorFocus: '#fff',
     inputBoxShadowColor: 'transparent',
     inputBoxShadowColorFocus: 'rgba(3, 102, 214, 0.3)',
+    inputBoxShadowErrorColorFocus: 'rgba(214, 3, 13, 0.3)',
+    inputPlaceholderColor: '#7c8590',
+    tabsBorderColor: '#30363d',
 };

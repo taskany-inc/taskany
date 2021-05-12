@@ -15,10 +15,11 @@ import { textColorDanger, textColorSecondary } from '@/generated/tokens';
 import { is } from '../../utils/styles';
 import { Input } from '../../components/Input/Input';
 import { TextArea } from '../TextArea/TextArea';
+import { MarkdownEditor } from '../MarkdownEditor/MarkdownEditor';
 
 interface FormFieldProps {
     type: keyof typeof supportedFormFieldControls;
-    label: string;
+    label?: string;
     state?: unstable_FormState<any>;
     name?: string;
     required?: boolean;
@@ -26,6 +27,7 @@ interface FormFieldProps {
     placeholder?: string;
     info?: string;
     schema?: zod.ZodObject<any>;
+    onChange?: (e: React.FormEvent) => void;
 }
 
 export interface FormProps {
@@ -82,21 +84,35 @@ const StyledFormFieldInfo = styled.div`
     color: ${textColorSecondary};
 `;
 
-const StyledFormField = styled.div`
+const StyledFormFieldBase = styled.div`
     padding: 15px 0;
 `;
 
+const StyledFormField = styled(({ type, ...props }) => <StyledFormFieldBase {...props} />)<{
+    type?: keyof typeof supportedFormFieldControls;
+}>`
+    ${is(
+        { type: 'input' },
+        css`
+            padding: 8px;
+        `,
+    )}
+`;
+
 const StyledForm = styled(ReakitForm)`
-    max-width: 440px;
+    max-width: 100%;
 `;
 
 const StyledFormActions = styled.div`
-    padding-top: 20px;
+    padding: 15px 8px 8px;
+
+    text-align: right;
 `;
 
 const supportedFormFieldControls = {
     input: Input,
     textarea: TextArea,
+    markdown: MarkdownEditor,
 };
 
 const isRequiredField = (schema: zod.ZodObject<any>, name: string) =>
@@ -104,18 +120,40 @@ const isRequiredField = (schema: zod.ZodObject<any>, name: string) =>
         ? true
         : !schema.shape[name]._def.options.filter((s) => s._def.t === 'undefined').length;
 
-const FormField: React.FC<FormFieldProps> = ({ name, required, label, placeholder, info, type, state, schema }) => {
+const FormField: React.FC<FormFieldProps> = ({
+    name,
+    required,
+    label,
+    placeholder,
+    info,
+    type,
+    state,
+    schema,
+    onChange,
+    value,
+}) => {
     const Control = supportedFormFieldControls[type];
     const invalid = state && name ? Boolean(state.errors[name]) || undefined : false;
     const infoMessage = state && name ? state.errors[name] || info : info;
     const isRequired = schema && name ? isRequiredField(schema, name) : required;
 
     return (
-        <StyledFormField>
-            <StyledLabel {...state} required={isRequired} error={invalid} htmlFor={name}>
-                {label}
-            </StyledLabel>
-            <Control {...state} name={name} placeholder={placeholder} error={invalid} id={name} />
+        <StyledFormField type={type}>
+            {label && (
+                <StyledLabel {...state} required={isRequired} error={invalid} htmlFor={name}>
+                    {label}
+                </StyledLabel>
+            )}
+            <Control
+                {...state}
+                name={name}
+                placeholder={placeholder}
+                error={invalid}
+                id={name}
+                onChange={onChange}
+                value={value}
+                autoComplete="off"
+            />
             {infoMessage && <StyledFormFieldInfo>{infoMessage}</StyledFormFieldInfo>}
         </StyledFormField>
     );

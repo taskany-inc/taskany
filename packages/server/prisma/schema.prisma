@@ -36,7 +36,7 @@ model User {
   accounts      Account[]
   createdQueues Queue[]   @relation("createdQueues")
   ownedQueues   Queue[]   @relation("ownedQueues")
-//   issues        Issue[]   @relation(name: "createdBy")
+  issues        Issue[]   @relation("createdBy")
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
@@ -51,22 +51,28 @@ model Queue {
   creatorId   Int
   owner       User     @relation("ownedQueues", fields: [ownerId], references: [id])
   ownerId     Int
+  issues      Issue[]  @relation("queue")
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @default(now()) @map(name: "updated_at")
 
   @@map(name: "queues")
 }
 
-// model Issue {
-//   id        Int       @id @default(autoincrement())
-//   key       String    @unique
-//   kind      IssueKind @relation(name: "kind", fields: [id], references: [id])
-//   createdBy User      @relation(name: "createdBy", fields: [id], references: [id])
-//   createdAt DateTime  @default(now()) @map(name: "created_at")
-//   updatedAt DateTime  @default(now()) @map(name: "updated_at")
+model Issue {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  title       String
+  description String?
+  createdBy   User     @relation("createdBy", fields: [creatorId], references: [id])
+  creatorId   Int
+  queue       Queue    @relation("queue", fields: [queueId], references: [id])
+  queueId     Int
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @default(now()) @map(name: "updated_at")
+  //   kind      IssueKind @relation(name: "kind", fields: [id], references: [id])
 
-//   @@map(name: "issues")
-// }
+  @@map(name: "issues")
+}
 
 // model IssueKind {
 //   id        Int      @id @default(autoincrement())

@@ -1,4 +1,5 @@
 import { css } from 'styled-components';
+
 import {
     buttonTextColor,
     buttonBackgroundColor,
@@ -10,8 +11,7 @@ import {
     buttonPrimaryBorderColor,
     buttonPrimaryBackgroundColorHover,
     buttonPrimaryBorderColorHover,
-} from '@/generated/tokens';
-
+} from '../../../@generated/tokens';
 import { is } from '../../../utils/styles';
 
 export const base = css`
