@@ -9,13 +9,19 @@ import {
     unstable_Form as ReakitForm,
     unstable_FormLabel as ReakitLabel,
 } from 'reakit/Form';
+import dynamic from 'next/dynamic';
 import * as zod from 'zod';
 import { textColorDanger, textColorSecondary } from '@/generated/tokens';
 
 import { is } from '../../utils/styles';
-import { Input } from '../../components/Input/Input';
-import { TextArea } from '../TextArea/TextArea';
-import { MarkdownEditor } from '../MarkdownEditor/MarkdownEditor';
+
+const supportedFormFieldControls = {
+    input: dynamic(() => import('../../components/Input/Input').then(({ Input }) => Input)),
+    textarea: dynamic(() => import('../../components/TextArea/TextArea').then(({ TextArea }) => TextArea)),
+    markdown: dynamic(() =>
+        import('../../components/MarkdownEditor/MarkdownEditor').then(({ MarkdownEditor }) => MarkdownEditor),
+    ),
+};
 
 interface FormFieldProps {
     type: keyof typeof supportedFormFieldControls;
@@ -117,12 +123,6 @@ const StyledFormActions = styled.div`
 
     text-align: right;
 `;
-
-const supportedFormFieldControls = {
-    input: Input,
-    textarea: TextArea,
-    markdown: MarkdownEditor,
-};
 
 const isRequiredField = (schema: zod.ZodObject<any>, name: string) =>
     !schema.shape[name]?._def.options
