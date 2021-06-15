@@ -54,6 +54,7 @@ const StyledLabel = styled(({ error, ...props }) => <ReakitLabel {...props} />)<
     error?: boolean;
 }>`
     display: block;
+    padding-left: 2px;
     padding-bottom: 5px;
     font-size: 14px;
 
@@ -81,6 +82,7 @@ const StyledFormFieldInfo = styled.div`
     display: inline-block;
     font-size: 12px;
     padding-top: 4px;
+    padding-left: 3px;
     color: ${textColorSecondary};
 `;
 
@@ -93,6 +95,13 @@ const StyledFormField = styled(({ type, ...props }) => <StyledFormFieldBase {...
 }>`
     ${is(
         { type: 'input' },
+        css`
+            padding: 8px;
+        `,
+    )}
+
+    ${is(
+        { type: 'textarea' },
         css`
             padding: 8px;
         `,

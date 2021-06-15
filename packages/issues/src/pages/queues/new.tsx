@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSession } from 'next-auth/client';
 import { useCreateQueueMutation } from '@/generated/queries';
 
 import { useRouter } from '../../hooks/router';
@@ -11,18 +12,24 @@ import {
 } from '../../components/DialogPage/DialogPage';
 import { Form, useFormState, schema } from '../../components/Form/Form';
 import { ButtonSubmit } from '../../components/Button/_submit/Button_submit';
+import { TimelineComment } from '../../components/TimelineComment/TimelineComment';
 import { defaultPageProps } from '../../hooks/defaultPageProps';
+
+const keyInfoMessage = (value: string) => `Your issues in queue will look like: ${value}-1, ${value}-431.`;
 
 export const getServerSideProps = defaultPageProps;
 export default function Page() {
+    const exKey = 'FRNTND';
+    const exInfo = keyInfoMessage(exKey);
+    const [session] = useSession();
     const router = useRouter();
     const [createQueueMutation] = useCreateQueueMutation();
-    const [keyInfo, setKeyInfo] = useState('');
+    const [keyInfo, setKeyInfo] = useState(exInfo);
     const [keyValue, setKeyValue] = useState('');
 
     const onKeyChange = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value.replace(/[^a-zA-Z ]/g, '').toUpperCase();
-        value !== '' ? setKeyInfo(`Your issues in queue will look like: ${value}-1, ${value}-431.`) : setKeyInfo('');
+        value !== '' ? setKeyInfo(keyInfoMessage(value)) : setKeyInfo(exInfo);
         setKeyValue(value.toUpperCase());
     };
 
@@ -37,8 +44,8 @@ export default function Page() {
         fields: {
             key: {
                 type: 'input',
-                label: 'Queue key',
-                placeholder: 'FRNTND',
+                label: 'Key',
+                placeholder: exKey,
                 info: keyInfo,
                 value: keyValue,
                 onChange: onKeyChange,
@@ -67,9 +74,13 @@ export default function Page() {
                 <H1>Setup your new queue</H1>
             </DialogPageHeader>
             <DialogPageContent>
-                <Form {...form}>
-                    <ButtonSubmit {...form} text="Create" view="primary" />
-                </Form>
+                {session?.user?.image && (
+                    <TimelineComment image={session.user.image}>
+                        <Form {...form}>
+                            <ButtonSubmit {...form} text="Create" view="primary" />
+                        </Form>
+                    </TimelineComment>
+                )}
             </DialogPageContent>
         </DialogPage>
     );
