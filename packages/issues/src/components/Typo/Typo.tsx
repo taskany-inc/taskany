@@ -28,6 +28,15 @@ export const H3 = styled.h3`
     color: ${textColorPrimary};
 `;
 
+export const H4 = styled.h4`
+    margin: 0;
+
+    font-weight: 600;
+    font-size: 16px;
+
+    color: ${textColorPrimary};
+`;
+
 export const Hi = styled.div`
     font-size: 14px;
     color: ${textColorTertiary};
