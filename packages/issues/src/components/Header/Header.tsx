@@ -60,8 +60,13 @@ const StyledHeaderLink = styled.a`
 `;
 
 const StyledHeaderIcon = styled(Icon)`
+    display: inherit;
     display: flex;
     align-items: center;
+`;
+
+const StyledHeaderLinkIcon = styled(Icon)`
+    display: inherit;
 `;
 
 const StyledHeaderIconLink = styled(StyledHeaderLink)`
@@ -174,14 +179,14 @@ export const Header: React.FC = () => {
             <StyledHeaderItem>
                 <Link href="/notifications">
                     <StyledHeaderIconLink>
-                        <Icon type="bell" {...iconProps} />
+                        <StyledHeaderLinkIcon type="bell" {...iconProps} />
                     </StyledHeaderIconLink>
                 </Link>
             </StyledHeaderItem>
 
             <StyledHeaderItem>
                 <DropdownAnchor {...dropdownState}>
-                    <Icon type="plus" {...iconProps} />
+                    <StyledHeaderLinkIcon type="plus" {...iconProps} />
                 </DropdownAnchor>
                 <Dropdown {...dropdownState}>
                     <HeaderCreationMenu />
