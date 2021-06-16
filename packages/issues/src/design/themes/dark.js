@@ -31,4 +31,6 @@ module.exports = {
     inputBoxShadowErrorColorFocus: 'rgba(214, 3, 13, 0.3)',
     inputPlaceholderColor: '#7c8590',
     tabsBorderColor: '#30363d',
+    navBarPrimaryColor: '#17b978',
+    navBarBorderColorHover: '#c8c9ca',
 };
