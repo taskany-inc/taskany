@@ -45,10 +45,6 @@ const StyledNavBarLink = styled(({ selected, ...props }) => <StyledNavBarLinkBas
 
     color: ${textColorPrimary};
 
-    ${StyledNavBarLinkIcon} {
-        color: ${textColorTertiary};
-    }
-
     &:hover {
         border-color: ${navBarBorderColorHover};
     }
@@ -62,10 +58,6 @@ const StyledNavBarLink = styled(({ selected, ...props }) => <StyledNavBarLinkBas
     ${is(
         { selected: true },
         css`
-            ${StyledNavBarLinkIcon} {
-                color: ${textColorPrimary};
-            }
-
             font-weight: 600;
 
             border-color: ${navBarPrimaryColor};
