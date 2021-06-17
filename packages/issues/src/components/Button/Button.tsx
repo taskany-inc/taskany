@@ -11,8 +11,4 @@ const StyledButton = styled(ReakitButton)<ButtonProps>`
     ${base}
 `;
 
-export const Button: React.FC<ButtonProps> = ({ text, ...props }) => (
-    <StyledButton {...props}>
-        <span>{text}</span>
-    </StyledButton>
-);
+export const Button: React.FC<ButtonProps> = ({ text, ...props }) => <StyledButton {...props}>{text}</StyledButton>;
