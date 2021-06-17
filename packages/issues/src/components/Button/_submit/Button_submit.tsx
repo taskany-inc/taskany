@@ -17,6 +17,6 @@ const StyledButtonSubmit = styled(ReakitButton)<ReakitButtonProps>`
 
 export const ButtonSubmit: React.FC<ButtonSubmitProps> = ({ text, fields, state, ...props }) => (
     <StyledButtonSubmit unstable_clickOnEnter {...state} {...props}>
-        <span>{text}</span>
+        {text}
     </StyledButtonSubmit>
 );
