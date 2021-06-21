@@ -6,6 +6,7 @@ import {
     buttonBorderColor,
     buttonBackgroundColorHover,
     buttonBorderColorHover,
+    buttonBoxShadow,
     buttonPrimaryTextColor,
     buttonPrimaryBackgroundColor,
     buttonPrimaryBorderColor,
@@ -17,8 +18,6 @@ import { is } from '../../../utils/styles';
 export const base = css`
     position: relative;
     display: inline-block;
-    padding: 5px 16px;
-    font-size: 14px;
     font-weight: 500;
     line-height: 20px;
     white-space: nowrap;
@@ -32,6 +31,11 @@ export const base = css`
     transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
     transition-property: color, background-color, border-color;
 
+    span {
+        display: inline-block;
+        vertical-align: text-top;
+    }
+
     :hover {
         transition-duration: 0.1s;
     }
@@ -43,11 +47,39 @@ export const base = css`
     }
 
     ${is(
+        { size: 's' },
+        css`
+            padding: 3px 12px;
+
+            font-size: 12px;
+        `,
+    )}
+
+    ${is(
+        { size: 'm' },
+        css`
+            padding: 5px 16px;
+
+            font-size: 14px;
+        `,
+    )}
+
+    ${is(
+        { size: 'l' },
+        css`
+            padding: 0.75em 1.5em;
+
+            font-size: 16px;
+        `,
+    )}
+
+    ${is(
         { view: 'default' },
         css`
             color: ${buttonTextColor};
             border-color: ${buttonBorderColor};
             background-color: ${buttonBackgroundColor};
+            box-shadow: ${buttonBoxShadow};
 
             :hover:not([disabled]) {
                 border-color: ${buttonBorderColorHover};

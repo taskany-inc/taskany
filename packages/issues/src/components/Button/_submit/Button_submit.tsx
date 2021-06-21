@@ -15,8 +15,28 @@ const StyledButtonSubmit = styled(ReakitButton)<ReakitButtonProps>`
     ${base}
 `;
 
-export const ButtonSubmit: React.FC<ButtonSubmitProps> = ({ text, fields, state, ...props }) => (
-    <StyledButtonSubmit unstable_clickOnEnter {...state} {...props}>
-        {text}
-    </StyledButtonSubmit>
-);
+const StyledText = styled.span`
+    display: inline-block;
+`;
+
+export const ButtonSubmit: React.FC<ButtonSubmitProps> = ({ text, fields, state, ...props }) => {
+    const content =
+        props.iconLeft || props.iconRight
+            ? [
+                  props.iconLeft ? [props.iconLeft, ' '] : null,
+                  <StyledText>{text}</StyledText>,
+                  props.iconRight ? [' ', props.iconRight] : null,
+              ]
+            : text;
+
+    return (
+        <StyledButtonSubmit unstable_clickOnEnter {...state} {...props}>
+            {content}
+        </StyledButtonSubmit>
+    );
+};
+
+ButtonSubmit.defaultProps = {
+    view: 'default',
+    size: 'm',
+};
