@@ -16,6 +16,7 @@ module.exports = {
     buttonBackgroundColorHover: '#30363d',
     buttonBorderColor: '#30363d',
     buttonBorderColorHover: '#8b949e',
+    buttonBoxShadow: '0 1px 0 rgba(27, 31, 35, 0.04), inset 0 1px 0 hsla(0, 0%, 100%, 0.25)',
     buttonPrimaryTextColor: '#fff',
     buttonPrimaryBackgroundColor: '#238636',
     buttonPrimaryBackgroundColorHover: '#2ea043',

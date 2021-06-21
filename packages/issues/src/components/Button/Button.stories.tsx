@@ -17,16 +17,3 @@ export const Default = Template.bind({});
 Default.args = {
     text: 'Button',
 };
-
-export const Primary = Template.bind({});
-Primary.args = {
-    text: 'Button',
-    view: 'primary',
-};
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-    text: 'Button',
-    view: 'primary',
-    disabled: true,
-};
