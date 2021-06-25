@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Resolver, Mutation, Arg, Ctx, InputType, Field } from 'type-graphql';
+import { Resolver, Mutation, Arg, Ctx, InputType, Field, Query } from 'type-graphql';
 
 import { Queue } from '../@generated/prisma';
 import { Context } from '../types/context';
@@ -9,6 +9,9 @@ import { TaskanyError } from '../types/error';
 class CreateQueueInput {
     @Field()
     key: string;
+
+    @Field()
+    title: string;
 
     @Field({ nullable: true })
     description?: string;
@@ -27,6 +30,20 @@ export class QueueResolver {
                 key: queue.key.toUpperCase(),
                 ownerId: user.id,
                 creatorId: user.id,
+            },
+        });
+    }
+
+    @Query(() => Queue, { nullable: true })
+    async queueByKey(@Arg('key', () => String) key: string, @Ctx() ctx: Context) {
+        return ctx.prisma.queue.findUnique({
+            where: { key },
+            include: {
+                issues: {
+                    orderBy: {
+                        createdAt: 'desc',
+                    },
+                },
             },
         });
     }

@@ -35,6 +35,7 @@ export default function Page() {
 
     const queueSchema = schema.object({
         key: schema.string(),
+        title: schema.string(),
         description: schema.string().optional(),
     });
 
@@ -49,6 +50,10 @@ export default function Page() {
                 info: keyInfo,
                 value: keyValue,
                 onChange: onKeyChange,
+            },
+            title: {
+                type: 'input',
+                label: 'Title',
             },
             description: {
                 type: 'textarea',

@@ -46,6 +46,7 @@ model User {
 model Queue {
   id          Int      @id @default(autoincrement())
   key         String   @unique
+  title       String?
   description String?
   createdBy   User     @relation("createdQueues", fields: [creatorId], references: [id])
   creatorId   Int
