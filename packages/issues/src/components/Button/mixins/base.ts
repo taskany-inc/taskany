@@ -7,6 +7,12 @@ import {
     buttonBackgroundColorHover,
     buttonBorderColorHover,
     buttonBoxShadow,
+    buttonOutlineTextColor,
+    buttonOutlineBackgroundColor,
+    buttonOutlineBorderColor,
+    buttonOutlineBackgroundColorHover,
+    buttonOutlineBorderColorHover,
+    buttonOutlineBoxShadow,
     buttonPrimaryTextColor,
     buttonPrimaryBackgroundColor,
     buttonPrimaryBorderColor,
@@ -106,6 +112,25 @@ export const base = css`
 
             :active:not([disabled]) {
                 background-color: ${buttonPrimaryBackgroundColor};
+            }
+        `,
+    )}
+
+${is(
+        { view: 'outline' },
+        css`
+            color: ${buttonOutlineTextColor};
+            border-color: ${buttonOutlineBorderColor};
+            background-color: ${buttonOutlineBackgroundColor};
+            box-shadow: ${buttonOutlineBoxShadow};
+
+            :hover:not([disabled]) {
+                border-color: ${buttonOutlineBorderColorHover};
+                background-color: ${buttonOutlineBackgroundColorHover};
+            }
+
+            :active:not([disabled]) {
+                background-color: ${buttonOutlineBackgroundColor};
             }
         `,
     )}
