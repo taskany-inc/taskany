@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import http from 'http';
 import express from 'express';
-import { urlencoded, json } from 'body-parser';
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { ApolloServer } from 'apollo-server-express';
@@ -33,8 +32,8 @@ export const createTaskanyServer = (/* options */) => () => {
 
     const app = express();
 
-    app.use(urlencoded({ extended: false }));
-    app.use(json());
+    app.use(express.urlencoded({ extended: false }));
+    app.use(express.json());
 
     log.verbose('setup jwt auth');
     app.post(graphql.graphqlPath, passport.authenticate('jwt', { session: false }));
