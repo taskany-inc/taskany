@@ -24,6 +24,7 @@ const StyledNavBarLinkIcon = styled.span`
     display: inline-block;
     margin-right: 8px;
     vertical-align: middle;
+    line-height: initial;
 `;
 const StyledNavBarLinkText = styled.span`
     display: inline-block;
