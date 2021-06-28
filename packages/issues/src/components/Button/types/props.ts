@@ -7,4 +7,5 @@ export interface CommonButtonProps {
     size?: 's' | 'm' | 'l';
     iconLeft?: React.ReactNode;
     iconRight?: React.ReactNode;
+    brick?: 'left' | 'right' | 'center';
 }
