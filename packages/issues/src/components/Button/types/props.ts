@@ -3,7 +3,7 @@ import React from 'react';
 export interface CommonButtonProps {
     disabled?: boolean;
     text: string;
-    view?: 'default' | 'primary';
+    view?: 'default' | 'primary' | 'outline';
     size?: 's' | 'm' | 'l';
     iconLeft?: React.ReactNode;
     iconRight?: React.ReactNode;
