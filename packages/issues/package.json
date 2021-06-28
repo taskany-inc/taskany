@@ -37,6 +37,7 @@
     "remark-parse": "9.0.0",
     "remark-rehype": "8.1.0",
     "styled-components": "5.3.0",
+    "teenyicons": "0.4.1",
     "tinykeys": "1.2.0",
     "zod": "3.2.0"
   },

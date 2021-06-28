@@ -2,14 +2,14 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 const TreeIcon = dynamic(() => import('./assets/tree.svg'));
-const BellIcon = dynamic(() => import('./assets/bell.svg'));
-const PlusIcon = dynamic(() => import('./assets/plus.svg'));
-const UserIcon = dynamic(() => import('./assets/user.svg'));
-const BookmarkIcon = dynamic(() => import('./assets/bookmark.svg'));
-const BulbOnIcon = dynamic(() => import('./assets/bulb-on.svg'));
-const CogIcon = dynamic(() => import('./assets/cog.svg'));
-const KanabanIcon = dynamic(() => import('./assets/kanban.svg'));
-const PieChartIcon = dynamic(() => import('./assets/pie-chart.svg'));
+const BellIcon = dynamic(() => import('teenyicons/outline/bell.svg'));
+const PlusIcon = dynamic(() => import('teenyicons/outline/plus-circle.svg'));
+const UserIcon = dynamic(() => import('teenyicons/outline/user.svg'));
+const BookmarkIcon = dynamic(() => import('teenyicons/outline/bookmark.svg'));
+const BulbOnIcon = dynamic(() => import('teenyicons/outline/double-caret-up-circle.svg'));
+const CogIcon = dynamic(() => import('teenyicons/outline/cog.svg'));
+const KanabanIcon = dynamic(() => import('teenyicons/outline/servers.svg'));
+const PieChartIcon = dynamic(() => import('teenyicons/outline/pie-chart-alt.svg'));
 
 const componentsMap = {
     tree: TreeIcon,
@@ -42,7 +42,7 @@ export const Icon: React.FC<IconProps> = ({ type, size, color, stroke = 1, class
     const sizePx = `${sizesMap[size]}px`;
 
     return (
-        <span className={className}>
+        <span className={className} style={{ lineHeight: 'initial' }}>
             <Component width={sizePx} height={sizePx} color={color} strokeWidth={stroke} />
         </span>
     );
