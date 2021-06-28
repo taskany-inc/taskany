@@ -109,4 +109,27 @@ export const base = css`
             }
         `,
     )}
+
+    ${is(
+        { brick: 'left' },
+        css`
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        `,
+    )}
+
+    ${is(
+        { brick: 'right' },
+        css`
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        `,
+    )}
+
+    ${is(
+        { brick: 'center' },
+        css`
+            border-radius: 0;
+        `,
+    )}
 `;
