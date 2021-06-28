@@ -2,60 +2,27 @@
 /* eslint-disable no-else-return */
 import React from 'react';
 import styled, { css } from 'styled-components';
-import {
-    unstable_FormState,
-    unstable_useFormState,
-    unstable_FormInitialState,
-    unstable_Form as ReakitForm,
-    unstable_FormLabel as ReakitLabel,
-} from 'reakit/Form';
-import dynamic from 'next/dynamic';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FieldValues, FormState, useForm, UseFormProps } from 'react-hook-form';
 import * as zod from 'zod';
-import { textColorDanger, textColorSecondary } from '@/generated/tokens';
 
+import { textColorDanger, textColorSecondary } from '../../@generated/tokens';
 import { is } from '../../utils/styles';
 
-const supportedFormFieldControls = {
-    input: dynamic(() => import('../../components/Input/Input').then(({ Input }) => Input)),
-    textarea: dynamic(() => import('../../components/TextArea/TextArea').then(({ TextArea }) => TextArea)),
-    markdown: dynamic(() =>
-        import('../../components/MarkdownEditor/MarkdownEditor').then(({ MarkdownEditor }) => MarkdownEditor),
-    ),
-};
-
 interface FormFieldProps {
-    type: keyof typeof supportedFormFieldControls;
     label?: string;
-    state?: unstable_FormState<any>;
     name?: string;
     required?: boolean;
-    value?: any;
-    placeholder?: string;
     info?: string;
-    schema?: zod.ZodObject<any>;
-    onChange?: (e: React.FormEvent) => void;
+    type: 'input' | 'textarea' | 'markdown-editor';
+    error?: FormState<FieldValues>['errors'];
 }
 
 export interface FormProps {
-    fields: Record<string, FormFieldProps>;
-    state: unstable_FormState<any>;
+    onSubmit?: () => void;
 }
 
-type FieldsMap = Record<string, FormFieldProps>;
-
-type onOriginValidate = unstable_FormInitialState<any>['onValidate'];
-interface FormStateProps<F extends FieldsMap> {
-    fields: F;
-    validateOnBlur?: boolean;
-    validateOnChange?: boolean;
-    schema?: zod.ZodObject<any>;
-    onValidate?: (values: any) => ReturnType<NonNullable<onOriginValidate>>;
-    onSubmit?: (values: any) => void;
-}
-
-export type FormErrors<F> = Partial<Record<keyof F, string>>;
-
-const StyledLabel = styled(({ error, ...props }) => <ReakitLabel {...props} />)<{
+const StyledLabel = styled(({ error, ...props }) => <label {...props} />)<{
     required?: boolean;
     error?: boolean;
 }>`
@@ -97,7 +64,7 @@ const StyledFormFieldBase = styled.div`
 `;
 
 const StyledFormField = styled(({ type, ...props }) => <StyledFormFieldBase {...props} />)<{
-    type?: keyof typeof supportedFormFieldControls;
+    type?: FormFieldProps['type'];
 }>`
     ${is(
         { type: 'input' },
@@ -114,111 +81,44 @@ const StyledFormField = styled(({ type, ...props }) => <StyledFormFieldBase {...
     )}
 `;
 
-const StyledForm = styled(ReakitForm)`
+export const Form: React.FC<FormProps> = styled.form`
     max-width: 100%;
 `;
 
-const StyledFormActions = styled.div`
+export const FormActions: React.FC = styled.div`
     padding: 15px 8px 8px;
 
     text-align: right;
 `;
 
-const isRequiredField = (schema: zod.ZodObject<any>, name: string) =>
-    !schema.shape[name]?._def.options
-        ? true
-        : !schema.shape[name]._def.options.filter((s) => s._def.t === 'undefined').length;
-
-const FormField: React.FC<FormFieldProps> = ({
-    name,
-    required,
-    label,
-    placeholder,
-    info,
-    type,
-    state,
-    schema,
-    onChange,
-    value,
-}) => {
-    const Control = supportedFormFieldControls[type];
-    const invalid = state && name ? Boolean(state.errors[name]) || undefined : false;
-    const infoMessage = state && name ? state.errors[name] || info : info;
-    const isRequired = schema && name ? isRequiredField(schema, name) : required;
+export const FormField: React.FC<FormFieldProps> = ({ name, required, label, info, type, error, children }) => {
+    const infoMessage = error ? error.message || info : info;
 
     return (
         <StyledFormField type={type}>
             {label && (
-                <StyledLabel {...state} required={isRequired} error={invalid} htmlFor={name}>
+                <StyledLabel required={required} error={error} htmlFor={name}>
                     {label}
                 </StyledLabel>
             )}
-            <Control
-                {...state}
-                name={name}
-                placeholder={placeholder}
-                error={invalid}
-                id={name}
-                onChange={onChange}
-                value={value}
-                autoComplete="off"
-            />
+            {children}
             {infoMessage && <StyledFormFieldInfo>{infoMessage}</StyledFormFieldInfo>}
         </StyledFormField>
     );
 };
 
-export const Form: React.FC<FormProps> = ({ fields, state, children }) => (
-    <StyledForm {...state}>
-        {Object.keys(fields).map((name, i) => (
-            <FormField key={i} {...fields[name]} />
-        ))}
-        <StyledFormActions>{children}</StyledFormActions>
-    </StyledForm>
-);
+interface FormStateProps extends UseFormProps {
+    schema?: zod.ZodObject<any>;
+}
 
-export function useFormState<F extends FieldsMap>(props: FormStateProps<F>) {
-    const values = {};
-
-    Object.keys(props.fields).forEach((name) => {
-        values[name] = props.fields[name].value;
-    });
-
-    const state = unstable_useFormState({
-        values: values as F,
-        validateOnBlur: props.validateOnBlur,
-        validateOnChange: props.validateOnChange,
-        onValidate: (v: F) => {
-            if (props.schema) {
-                const { schema } = props;
-                const preValidation = schema.safeParse(v);
-
-                if (preValidation.success) {
-                    return props.onValidate ? props.onValidate(v) : null;
-                }
-
-                const errors = {};
-                for (const { path, message } of (preValidation as { success: false; error: zod.ZodError }).error
-                    .errors) {
-                    // TODO: support deep schemas
-                    errors[path[0]] = message;
-                }
-                throw errors;
-            } else {
-                return props.onValidate ? props.onValidate(v) : null;
-            }
-        },
-        onSubmit: props.onSubmit,
-    });
-
-    const fields = { ...props.fields };
-    Object.keys(state.values).forEach((name) => {
-        fields[name].name = name;
-        fields[name].state = state;
-        fields[name].schema = props.schema;
-    });
-
-    return { fields, state };
+export function useFormState(props: FormStateProps = {}) {
+    const { schema, ...defaultProps } = props;
+    return schema
+        ? useForm({
+              ...defaultProps,
+              resolver: zodResolver(schema),
+          })
+        : useForm(defaultProps);
 }
 
 export * as schema from 'zod';

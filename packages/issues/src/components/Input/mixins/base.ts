@@ -50,4 +50,27 @@ export const base = css`
             box-shadow: 0 0 0 3px ${inputBoxShadowErrorColorFocus} !important;
         `,
     )}
+
+    ${is(
+        { brick: 'left' },
+        css`
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        `,
+    )}
+
+    ${is(
+        { brick: 'right' },
+        css`
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        `,
+    )}
+
+    ${is(
+        { brick: 'center' },
+        css`
+            border-radius: 0;
+        `,
+    )}
 `;
