@@ -7,7 +7,7 @@
     "module": "commonjs",
     "lib": [
       "esnext.asynciterable",
-      "ES2016",
+      "ES2019",
       "dom"
     ],
     "outDir": "dist",
