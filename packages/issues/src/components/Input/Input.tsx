@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FieldPath, FieldValues, FormState, UseFormRegister, RegisterOptions } from 'react-hook-form';
 
-import { base } from './mixins/base';
+import { inputBoxStyles } from '../InputBox/InputBox';
 
 export interface InputProps {
     placeholder?: string;
@@ -18,7 +18,7 @@ export interface InputProps {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledInput = styled(({ error, forwardRef, ...props }) => <input ref={forwardRef} {...props} />)<InputProps>`
-    ${base}
+    ${inputBoxStyles}
 `;
 
 export const Input = React.forwardRef<InputProps, InputProps>((props, ref) => (

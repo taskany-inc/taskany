@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { FieldPath, FieldValues, FormState, UseFormRegister, RegisterOptions } from 'react-hook-form';
 
 import { Input } from '../Input/Input';
-import { base } from '../Input/mixins/base';
+import { inputBoxStyles } from '../InputBox/InputBox';
 
 type TextAreaProps = React.ComponentProps<typeof Input>;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledTextArea = styled(({ error, forwardRef, ...props }) => <textarea ref={forwardRef} {...props} />)`
-    ${base}
+    ${inputBoxStyles}
 
     min-height: 100px;
 `;

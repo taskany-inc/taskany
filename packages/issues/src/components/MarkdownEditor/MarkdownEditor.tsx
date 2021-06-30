@@ -7,7 +7,7 @@ import stringify from 'rehype-stringify';
 import { FieldPath, FieldValues, FormState, UseFormRegister, RegisterOptions } from 'react-hook-form';
 
 import { Tabs, Tab, TabMenu, TabPanel } from '../Tabs/Tabs';
-import { base } from '../Input/mixins/base';
+import { inputBoxStyles } from '../InputBox/InputBox';
 
 const processor = (md: string): Promise<string> =>
     // TODO: support gfm https://github.com/productivity-tools/taskany/issues/101
@@ -23,7 +23,7 @@ const StyledTabPanel = styled(TabPanel)`
     min-height: 100%;
 `;
 const StyledTextArea = styled.textarea`
-    ${base}
+    ${inputBoxStyles}
 
     min-height: 150px;
 

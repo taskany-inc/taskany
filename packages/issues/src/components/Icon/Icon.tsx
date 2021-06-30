@@ -10,6 +10,7 @@ const BulbOnIcon = dynamic(() => import('teenyicons/outline/double-caret-up-circ
 const CogIcon = dynamic(() => import('teenyicons/outline/cog.svg'));
 const KanabanIcon = dynamic(() => import('teenyicons/outline/servers.svg'));
 const PieChartIcon = dynamic(() => import('teenyicons/outline/pie-chart-alt.svg'));
+const ArrowDownSmall = dynamic(() => import('teenyicons/outline/down-small.svg'));
 
 const componentsMap = {
     tree: TreeIcon,
@@ -21,6 +22,7 @@ const componentsMap = {
     cog: CogIcon,
     kanban: KanabanIcon,
     pieChart: PieChartIcon,
+    arrowDownSmall: ArrowDownSmall,
 };
 
 const sizesMap = {
