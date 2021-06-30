@@ -15,7 +15,7 @@ import {
 import { NavBar, NavBarLink } from '../../../components/NavBar/NavBar';
 import { Link } from '../../../components/Link/Link';
 import { Icon } from '../../../components/Icon/Icon';
-import { ButtonLink } from '../../../components/Button/_link/Button_link';
+import { Button } from '../../../components/Button/Button';
 import { H3, H4 } from '../../../components/Typo/Typo';
 import { defaultPageProps } from '../../../hooks/defaultPageProps';
 import { routes } from '../../../hooks/router';
@@ -178,7 +178,7 @@ export default function Page() {
 
             <InfoPageContent>
                 <StyledFilters>
-                    <ButtonLink view="primary" href={routes.createIssue()} text="New issue" />
+                    <Button view="primary" type="link" href={routes.createIssue()} text="New issue" />
                 </StyledFilters>
 
                 <InfoTable>
