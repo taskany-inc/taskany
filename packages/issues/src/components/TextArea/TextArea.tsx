@@ -7,13 +7,16 @@ import { base } from '../Input/mixins/base';
 
 type TextAreaProps = React.ComponentProps<typeof Input>;
 
-const StyledTextArea: React.FC<TextAreaProps> = styled.textarea`
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const StyledTextArea = styled(({ error, forwardRef, ...props }) => <textarea ref={forwardRef} {...props} />)`
     ${base}
 
     min-height: 100px;
 `;
 
-export const TextArea = (props) => <StyledTextArea {...props} />;
+export const TextArea = React.forwardRef<TextAreaProps, TextAreaProps>((props, ref) => (
+    <StyledTextArea forwardRef={ref} {...props} />
+));
 
 export const createFormTextAreaProps = (
     name: string,
