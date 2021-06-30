@@ -13,7 +13,7 @@ import {
 import { Form, FormField, FormActions, useFormState, schema } from '../../components/Form/Form';
 import { Input, createFormInputProps } from '../../components/Input/Input';
 import { MarkdownEditor, createFormMarkdownEditorProps } from '../../components/MarkdownEditor/MarkdownEditor';
-import { ButtonSubmit } from '../../components/Button/_submit/Button_submit';
+import { Button } from '../../components/Button/Button';
 import { TimelineComment } from '../../components/TimelineComment/TimelineComment';
 import { defaultPageProps } from '../../hooks/defaultPageProps';
 
@@ -70,7 +70,7 @@ export default function Page() {
                             </FormField>
 
                             <FormActions>
-                                <ButtonSubmit text="Create issue" view="primary" />
+                                <Button text="Create issue" view="primary" type="submit" />
                             </FormActions>
                         </Form>
                     </TimelineComment>
