@@ -9,10 +9,11 @@ import {
 } from 'reakit/Tab';
 
 import { is } from '../../utils/styles';
-import { tabsBorderColor, backgroundColorPrimary } from '../../@generated/tokens';
+import { tabsBorderColor, backgroundColorPrimary, textFontFamily } from '../../@generated/tokens';
 
 const useTabState = useReakitTabState;
 const StyledTabs = styled.div``;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledTab = styled(({ selected, ...props }) => <ReakitTab {...props} />)<{ selected: boolean }>`
     appearance: none;
     background-color: initial;
@@ -24,6 +25,7 @@ const StyledTab = styled(({ selected, ...props }) => <ReakitTab {...props} />)<{
     margin-bottom: -1px;
 
     font-size: 14px;
+    font-family: ${textFontFamily};
     line-height: 23px;
 
     cursor: pointer;

@@ -12,6 +12,7 @@ import {
 } from '../../components/DialogPage/DialogPage';
 import { Form, FormField, FormActions, useFormState, schema } from '../../components/Form/Form';
 import { Input, createFormInputProps } from '../../components/Input/Input';
+import { Select, createFormSelectProps } from '../../components/Select/Select';
 import { MarkdownEditor, createFormMarkdownEditorProps } from '../../components/MarkdownEditor/MarkdownEditor';
 import { Button } from '../../components/Button/Button';
 import { TimelineComment } from '../../components/TimelineComment/TimelineComment';
@@ -31,7 +32,7 @@ export default function Page() {
     type I = schema.infer<typeof issueSchema>;
 
     const { register, handleSubmit, formState } = useFormState({ schema: issueSchema, mode: 'onBlur' });
-    const queueInputProps = createFormInputProps('queue', { register, formState }, { placeholder: 'Queue' })();
+    const queueSelectProps = createFormSelectProps('queue', { register, formState }, { placeholder: 'Queue' })();
     const titleInputProps = createFormInputProps('title', { register, formState }, { placeholder: 'Title' })();
     const descriptionInputProps = createFormMarkdownEditorProps('description', { register, formState })();
 
@@ -56,13 +57,17 @@ export default function Page() {
                     <TimelineComment image={session.user.image}>
                         <Form onSubmit={handleSubmit(onSubmit)}>
                             <FormField type="complex">
-                                {/* select + */}
-                                <Input {...queueInputProps} />
-                            </FormField>
+                                <Select
+                                    brick="right"
+                                    options={[
+                                        { value: 'chocolate', label: 'Chocolate' },
+                                        { value: 'text', label: 'Text' },
+                                        { value: 'vanilla', label: 'Vanilla' },
+                                    ]}
+                                    {...queueSelectProps}
+                                />
 
-                            <FormField type="complex">
-                                {/* select + */}
-                                <Input {...titleInputProps} />
+                                <Input brick="left" {...titleInputProps} />
                             </FormField>
 
                             <FormField type="markdown">

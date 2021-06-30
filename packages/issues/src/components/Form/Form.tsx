@@ -79,6 +79,8 @@ const StyledFormField = styled(({ type, ...props }) => <StyledFormFieldBase {...
         { type: 'complex' },
         css`
             padding: 8px;
+
+            display: flex;
         `,
     )}
 
