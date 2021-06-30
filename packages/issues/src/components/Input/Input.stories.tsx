@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 
@@ -22,7 +23,7 @@ const Template: Story<React.ComponentProps<typeof Input>> = (args) => {
     const inputProps = createFormInputProps('example', { register, formState });
 
     const onSubmit = (values: V) => {
-        alert(JSON.stringify(values));
+        console.log(JSON.stringify(values));
     };
 
     return (

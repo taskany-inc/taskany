@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-else-return */
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,14 +13,15 @@ interface FormFieldProps {
     name?: string;
     required?: boolean;
     info?: string;
-    type: 'input' | 'textarea' | 'markdown-editor';
+    type: 'input' | 'textarea' | 'markdown' | 'complex';
     error?: FormState<FieldValues>['errors'];
 }
 
-export interface FormProps {
+interface FormProps {
     onSubmit?: () => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledLabel = styled(({ error, ...props }) => <label {...props} />)<{
     required?: boolean;
     error?: boolean;
@@ -53,9 +53,10 @@ const StyledLabel = styled(({ error, ...props }) => <label {...props} />)<{
 
 const StyledFormFieldInfo = styled.div`
     display: inline-block;
-    font-size: 12px;
     padding-top: 4px;
     padding-left: 3px;
+
+    font-size: 12px;
     color: ${textColorSecondary};
 `;
 
@@ -63,11 +64,19 @@ const StyledFormFieldBase = styled.div`
     padding: 15px 0;
 `;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledFormField = styled(({ type, ...props }) => <StyledFormFieldBase {...props} />)<{
     type?: FormFieldProps['type'];
 }>`
     ${is(
         { type: 'input' },
+        css`
+            padding: 8px;
+        `,
+    )}
+
+    ${is(
+        { type: 'complex' },
         css`
             padding: 8px;
         `,
@@ -94,13 +103,15 @@ export const FormActions: React.FC = styled.div`
 export const FormField: React.FC<FormFieldProps> = ({ name, required, label, info, type, error, children }) => {
     const infoMessage = error ? error.message || info : info;
 
+    const labelRenderer = label ? (
+        <StyledLabel required={required} error={error} htmlFor={name}>
+            {label}
+        </StyledLabel>
+    ) : null;
+
     return (
         <StyledFormField type={type}>
-            {label && (
-                <StyledLabel required={required} error={error} htmlFor={name}>
-                    {label}
-                </StyledLabel>
-            )}
+            {labelRenderer}
             {children}
             {infoMessage && <StyledFormFieldInfo>{infoMessage}</StyledFormFieldInfo>}
         </StyledFormField>

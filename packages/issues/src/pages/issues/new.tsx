@@ -10,7 +10,9 @@ import {
     DialogPageHeader,
     DialogPageContent,
 } from '../../components/DialogPage/DialogPage';
-import { Form, useFormState, schema } from '../../components/Form/Form';
+import { Form, FormField, FormActions, useFormState, schema } from '../../components/Form/Form';
+import { Input, createFormInputProps } from '../../components/Input/Input';
+import { MarkdownEditor, createFormMarkdownEditorProps } from '../../components/MarkdownEditor/MarkdownEditor';
 import { ButtonSubmit } from '../../components/Button/_submit/Button_submit';
 import { TimelineComment } from '../../components/TimelineComment/TimelineComment';
 import { defaultPageProps } from '../../hooks/defaultPageProps';
@@ -22,36 +24,24 @@ export default function Page() {
     const [createIssueMutation] = useCreateIssueMutation();
 
     const issueSchema = schema.object({
-        queue: schema.string(),
-        title: schema.string(),
+        queue: schema.string().min(1),
+        title: schema.string().min(1),
         description: schema.string().optional(),
     });
-
     type I = schema.infer<typeof issueSchema>;
 
-    const form = useFormState({
-        fields: {
-            queue: {
-                type: 'input',
-                placeholder: 'Queue',
-            },
-            title: {
-                type: 'input',
-                placeholder: 'Title',
-            },
-            description: {
-                type: 'markdown',
-            },
-        },
-        schema: issueSchema,
-        async onSubmit(issue: I) {
-            const { data } = await createIssueMutation({
-                variables: { issue },
-            });
-            // TODO: https://github.com/productivity-tools/taskany/issues/90
-            if (data) router.issue(data.createIssue.key);
-        },
-    });
+    const { register, handleSubmit, formState } = useFormState({ schema: issueSchema, mode: 'onBlur' });
+    const queueInputProps = createFormInputProps('queue', { register, formState }, { placeholder: 'Queue' })();
+    const titleInputProps = createFormInputProps('title', { register, formState }, { placeholder: 'Title' })();
+    const descriptionInputProps = createFormMarkdownEditorProps('description', { register, formState })();
+
+    const onSubmit = async (issue: I) => {
+        const { data } = await createIssueMutation({
+            variables: { issue },
+        });
+        // TODO: https://github.com/productivity-tools/taskany/issues/90
+        if (data) router.issue(data.createIssue.key);
+    };
 
     return (
         <DialogPage>
@@ -64,8 +54,24 @@ export default function Page() {
             <DialogPageContent>
                 {session?.user?.image && (
                     <TimelineComment image={session.user.image}>
-                        <Form {...form}>
-                            <ButtonSubmit {...form} text="Create issue" view="primary" />
+                        <Form onSubmit={handleSubmit(onSubmit)}>
+                            <FormField type="complex">
+                                {/* select + */}
+                                <Input {...queueInputProps} />
+                            </FormField>
+
+                            <FormField type="complex">
+                                {/* select + */}
+                                <Input {...titleInputProps} />
+                            </FormField>
+
+                            <FormField type="markdown">
+                                <MarkdownEditor {...descriptionInputProps} />
+                            </FormField>
+
+                            <FormActions>
+                                <ButtonSubmit text="Create issue" view="primary" />
+                            </FormActions>
                         </Form>
                     </TimelineComment>
                 )}
