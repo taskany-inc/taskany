@@ -4,7 +4,7 @@ import remark from 'remark';
 import parse from 'remark-parse';
 import r2r from 'remark-rehype';
 import stringify from 'rehype-stringify';
-import { Input } from 'reakit/Input';
+import { FieldPath, FieldValues, FormState, UseFormRegister, RegisterOptions } from 'react-hook-form';
 
 import { Tabs, Tab, TabMenu, TabPanel } from '../Tabs/Tabs';
 import { base } from '../Input/mixins/base';
@@ -16,13 +16,13 @@ const processor = (md: string): Promise<string> =>
             .use(parse)
             .use(r2r)
             .use(stringify)
-            .process(md, (err, res) => resolve(res.toString())),
+            .process(md, (_, res) => resolve(res.toString())),
     );
 
 const StyledTabPanel = styled(TabPanel)`
     min-height: 100%;
 `;
-const StyledTextArea = styled((props) => <Input as="textarea" {...props} />)`
+const StyledTextArea = styled.textarea`
     ${base}
 
     min-height: 150px;
@@ -45,9 +45,14 @@ const StyledPreview = styled.div`
 const PreviewContainer: React.FC = ({ children: __html }) => <StyledPreview dangerouslySetInnerHTML={{ __html }} />;
 
 export interface MarkdownEditorProps {
-    value: string;
-    onChange?: (e: React.FormEvent<HTMLTextAreaElement>) => void;
+    placeholder?: string;
     error?: boolean;
+    value?: string;
+    defaultValue?: string;
+    name?: string;
+
+    onChange?: (e: React.FormEvent<HTMLTextAreaElement>) => void;
+    onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
 }
 
 const modeMap = {
@@ -55,8 +60,15 @@ const modeMap = {
     1: 'preview',
 };
 
-export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange }) => {
-    const [markdown, setMarkdown] = useState(value);
+export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
+    value = '',
+    defaultValue = '',
+    placeholder,
+    name,
+    onChange,
+    onBlur,
+}) => {
+    const [markdown, setMarkdown] = useState(value || defaultValue);
     const onMarkdownChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
         setMarkdown(e.currentTarget.value);
         if (onChange) onChange(e);
@@ -77,9 +89,17 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange 
                     <Tab>Write</Tab>
                     <Tab>Preview</Tab>
                 </TabMenu>
+
                 <StyledTabPanel>
-                    <StyledTextArea value={markdown} onChange={onMarkdownChange} />
+                    <StyledTextArea
+                        name={name}
+                        value={markdown}
+                        placeholder={placeholder}
+                        onChange={onMarkdownChange}
+                        onBlur={onBlur}
+                    />
                 </StyledTabPanel>
+
                 <StyledTabPanel>
                     <PreviewContainer>{html}</PreviewContainer>
                 </StyledTabPanel>
@@ -87,3 +107,13 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange 
         </StyledContainer>
     );
 };
+
+export const createFormMarkdownEditorProps = (
+    name: string,
+    { register, formState }: { register: UseFormRegister<FieldValues>; formState: FormState<FieldValues> },
+    inputProps?: MarkdownEditorProps,
+) => (options?: RegisterOptions<FieldValues, FieldPath<FieldValues>>) => ({
+    ...inputProps,
+    ...register(name, options),
+    error: Boolean(formState.errors[name]),
+});

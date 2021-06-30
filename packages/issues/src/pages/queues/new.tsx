@@ -10,7 +10,9 @@ import {
     DialogPageHeader,
     DialogPageContent,
 } from '../../components/DialogPage/DialogPage';
-import { Form, useFormState, schema } from '../../components/Form/Form';
+import { Form, FormField, FormActions, useFormState, schema } from '../../components/Form/Form';
+import { Input, createFormInputProps } from '../../components/Input/Input';
+import { TextArea, createFormTextAreaProps } from '../../components/TextArea/TextArea';
 import { ButtonSubmit } from '../../components/Button/_submit/Button_submit';
 import { TimelineComment } from '../../components/TimelineComment/TimelineComment';
 import { defaultPageProps } from '../../hooks/defaultPageProps';
@@ -27,49 +29,42 @@ export default function Page() {
     const [keyInfo, setKeyInfo] = useState(exInfo);
     const [keyValue, setKeyValue] = useState('');
 
+    const queueSchema = schema.object({
+        key: schema.string().min(1),
+        title: schema.string().min(1),
+        description: schema.string().optional(),
+    });
+    type Q = schema.infer<typeof queueSchema>;
+
+    const { register, handleSubmit, formState } = useFormState({ schema: queueSchema, mode: 'onBlur' });
+    const keyInputProps = createFormInputProps(
+        'key',
+        { register, formState },
+        { placeholder: exKey, value: keyValue },
+    )();
+    const titleInputProps = createFormInputProps('title', { register, formState }, { placeholder: 'Title' })();
+    const descriptionTextAreaProps = createFormTextAreaProps(
+        'description',
+        { register, formState },
+        { placeholder: 'Description' },
+    )();
+
     const onKeyChange = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value.replace(/[^a-zA-Z ]/g, '').toUpperCase();
         value !== '' ? setKeyInfo(keyInfoMessage(value)) : setKeyInfo(exInfo);
         setKeyValue(value.toUpperCase());
+
+        keyInputProps.onChange(e);
     };
 
-    const queueSchema = schema.object({
-        key: schema.string(),
-        title: schema.string(),
-        description: schema.string().optional(),
-    });
+    const onSubmit = async (queue: Q) => {
+        const { data } = await createQueueMutation({
+            variables: { queue },
+        });
 
-    type Q = schema.infer<typeof queueSchema>;
-
-    const form = useFormState({
-        fields: {
-            key: {
-                type: 'input',
-                label: 'Key',
-                placeholder: exKey,
-                info: keyInfo,
-                value: keyValue,
-                onChange: onKeyChange,
-            },
-            title: {
-                type: 'input',
-                label: 'Title',
-            },
-            description: {
-                type: 'textarea',
-                label: 'Description',
-            },
-        },
-        schema: queueSchema,
-        async onSubmit(queue: Q) {
-            const { data } = await createQueueMutation({
-                variables: { queue },
-            });
-
-            // TODO: https://github.com/productivity-tools/taskany/issues/90
-            if (data) router.queue(data.createQueue.key);
-        },
-    });
+        // TODO: https://github.com/productivity-tools/taskany/issues/90
+        if (data) router.queue(data.createQueue.key);
+    };
 
     return (
         <DialogPage>
@@ -81,8 +76,22 @@ export default function Page() {
             <DialogPageContent>
                 {session?.user?.image && (
                     <TimelineComment image={session.user.image}>
-                        <Form {...form}>
-                            <ButtonSubmit {...form} text="Create" view="primary" />
+                        <Form onSubmit={handleSubmit(onSubmit)}>
+                            <FormField type="input" info={keyInfo}>
+                                <Input {...keyInputProps} onChange={onKeyChange} />
+                            </FormField>
+
+                            <FormField type="input">
+                                <Input {...titleInputProps} />
+                            </FormField>
+
+                            <FormField type="textarea">
+                                <TextArea {...descriptionTextAreaProps} />
+                            </FormField>
+
+                            <FormActions>
+                                <ButtonSubmit text="Create" view="primary" />
+                            </FormActions>
                         </Form>
                     </TimelineComment>
                 )}
