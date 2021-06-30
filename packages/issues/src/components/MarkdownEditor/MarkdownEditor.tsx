@@ -60,53 +60,49 @@ const modeMap = {
     1: 'preview',
 };
 
-export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
-    value = '',
-    defaultValue = '',
-    placeholder,
-    name,
-    onChange,
-    onBlur,
-}) => {
-    const [markdown, setMarkdown] = useState(value || defaultValue);
-    const onMarkdownChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
-        setMarkdown(e.currentTarget.value);
-        if (onChange) onChange(e);
-    };
+export const MarkdownEditor: React.FC<MarkdownEditorProps> = React.forwardRef<MarkdownEditorProps, MarkdownEditorProps>(
+    ({ value = '', defaultValue = '', placeholder, name, onChange, onBlur }, ref) => {
+        const [markdown, setMarkdown] = useState(value || defaultValue);
+        const onMarkdownChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+            setMarkdown(e.currentTarget.value);
+            if (onChange) onChange(e);
+        };
 
-    const [html, setHtml] = useState('');
-    const onModeChange = async (id: number) => {
-        if (modeMap[id] === 'preview') {
-            const html_ = await processor(markdown);
-            setHtml(html_);
-        }
-    };
+        const [html, setHtml] = useState('');
+        const onModeChange = async (id: number) => {
+            if (modeMap[id] === 'preview') {
+                const html_ = await processor(markdown);
+                setHtml(html_);
+            }
+        };
 
-    return (
-        <StyledContainer>
-            <Tabs onChange={onModeChange}>
-                <TabMenu aria-label="Markdown Editor">
-                    <Tab>Write</Tab>
-                    <Tab>Preview</Tab>
-                </TabMenu>
+        return (
+            <StyledContainer>
+                <Tabs onChange={onModeChange}>
+                    <TabMenu aria-label="Markdown Editor">
+                        <Tab>Write</Tab>
+                        <Tab>Preview</Tab>
+                    </TabMenu>
 
-                <StyledTabPanel>
-                    <StyledTextArea
-                        name={name}
-                        value={markdown}
-                        placeholder={placeholder}
-                        onChange={onMarkdownChange}
-                        onBlur={onBlur}
-                    />
-                </StyledTabPanel>
+                    <StyledTabPanel>
+                        <StyledTextArea
+                            ref={ref}
+                            name={name}
+                            value={markdown}
+                            placeholder={placeholder}
+                            onChange={onMarkdownChange}
+                            onBlur={onBlur}
+                        />
+                    </StyledTabPanel>
 
-                <StyledTabPanel>
-                    <PreviewContainer>{html}</PreviewContainer>
-                </StyledTabPanel>
-            </Tabs>
-        </StyledContainer>
-    );
-};
+                    <StyledTabPanel>
+                        <PreviewContainer>{html}</PreviewContainer>
+                    </StyledTabPanel>
+                </Tabs>
+            </StyledContainer>
+        );
+    },
+);
 
 export const createFormMarkdownEditorProps = (
     name: string,
