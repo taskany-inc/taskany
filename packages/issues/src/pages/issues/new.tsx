@@ -17,6 +17,7 @@ import { MarkdownEditor, createFormMarkdownEditorProps } from '../../components/
 import { Button } from '../../components/Button/Button';
 import { TimelineComment } from '../../components/TimelineComment/TimelineComment';
 import { defaultPageProps } from '../../hooks/defaultPageProps';
+import { useHotkey } from '../../hooks/useHotkeys';
 
 export const getServerSideProps = defaultPageProps;
 export default function Page() {
@@ -49,6 +50,8 @@ export default function Page() {
         // TODO: https://github.com/productivity-tools/taskany/issues/90
         if (data) router.issue(data.createIssue.key);
     };
+
+    useHotkey('$mod+Enter', handleSubmit(onSubmit));
 
     // TODO: use async select https://react-select.com/async
     const { data: queues, loading: queuesAreLoading } = useAllQueuesQuery();
