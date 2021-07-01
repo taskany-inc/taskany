@@ -27,3 +27,12 @@ export const queueByKey = gql`
         }
     }
 `;
+
+export const allQueues = gql`
+    query allQueues {
+        allQueues {
+            key
+            title
+        }
+    }
+`;

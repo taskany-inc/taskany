@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import ReactSelect from 'react-select';
-import { FieldPath, FieldValues, FormState, UseFormRegister, RegisterOptions } from 'react-hook-form';
+import {
+    FieldPath,
+    FieldValues,
+    FormState,
+    UseFormRegister,
+    RegisterOptions,
+    Controller,
+    Control,
+} from 'react-hook-form';
 
 import { Icon } from '../Icon/Icon';
 import { inputBoxStyles } from '../InputBox/InputBox';
@@ -16,6 +24,7 @@ import { is } from '../../utils/styles';
 
 type SelectProps = React.ComponentProps<typeof ReactSelect> & {
     brick?: 'left' | 'right' | 'center';
+    name: string;
 };
 
 const StyledReactSelect = styled(ReactSelect)`
@@ -131,22 +140,50 @@ const StyledDownIndicator = styled((props) => <Icon type="arrowDownSmall" size="
 
 const DownIndicator = ({ isFocused }) => <StyledDownIndicator focused={isFocused} />;
 
-export const Select = React.forwardRef<SelectProps, SelectProps>((props, ref) => (
-    <StyledReactSelect
-        {...props}
-        innerRef={ref}
-        classNamePrefix="react-select"
-        components={{ DropdownIndicator: DownIndicator, IndicatorSeparator: () => null }}
-    />
-));
+export const Select = React.forwardRef<SelectProps, SelectProps>((props, ref) => {
+    const [selectValue, setSelectValue] = useState<Record<string, { label: string; value: string }>>({});
+
+    const onSelectValueChange = (v: { label: string; value: string }, proxyChange?: (pv: string) => void) => {
+        setSelectValue({
+            ...selectValue,
+            [v.value]: v,
+        });
+
+        if (proxyChange) proxyChange(v.value);
+    };
+
+    return (
+        <Controller
+            control={props.control}
+            name={props.name}
+            render={({ field: { onChange, onBlur, value } }) => (
+                <StyledReactSelect
+                    {...props}
+                    onChange={(v) => onSelectValueChange(v, onChange)}
+                    onBlur={onBlur}
+                    value={selectValue[value]}
+                    innerRef={ref}
+                    instanceId={props.instanceId}
+                    classNamePrefix="react-select"
+                    components={{ DropdownIndicator: DownIndicator, IndicatorSeparator: () => null }}
+                />
+            )}
+        />
+    );
+});
 
 export const createFormSelectProps = (
     name: string,
-    { register, formState }: { register: UseFormRegister<FieldValues>; formState: FormState<FieldValues> },
-    inputProps?: SelectProps,
+    {
+        register,
+        control,
+        formState,
+    }: { register: UseFormRegister<FieldValues>; control: Control; formState: FormState<FieldValues> },
+    inputProps?: Omit<SelectProps, 'name'>,
 ) => (options?: RegisterOptions<FieldValues, FieldPath<FieldValues>>) => ({
     ...inputProps,
     ...register(name, options),
     instanceId: name,
+    control,
     error: Boolean(formState.errors[name]),
 });
