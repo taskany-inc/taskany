@@ -20,7 +20,7 @@ class CreateQueueInput {
 @Resolver(Queue)
 export class QueueResolver {
     @Mutation(() => Queue)
-    async createQueue(@Arg('queue') queue: CreateQueueInput, @Ctx() ctx: Context): Promise<Queue | TaskanyError> {
+    async createQueue(@Arg('queue') queue: CreateQueueInput, @Ctx() ctx: Context) {
         const { resolvedUser: user } = ctx.req;
         if (!user) return { code: 401, message: 'Unauthorized' };
 
@@ -46,5 +46,10 @@ export class QueueResolver {
                 },
             },
         });
+    }
+
+    @Query(() => [Queue], { nullable: true })
+    async allQueues(@Ctx() ctx: Context) {
+        return ctx.prisma.queue.findMany();
     }
 }

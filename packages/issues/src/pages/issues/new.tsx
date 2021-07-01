@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSession } from 'next-auth/client';
-import { useCreateIssueMutation } from '@/generated/queries';
+import { useCreateIssueMutation, useAllQueuesQuery } from '@/generated/queries';
 
 import { useRouter } from '../../hooks/router';
 import { H1 } from '../../components/Typo/Typo';
@@ -31,18 +31,27 @@ export default function Page() {
     });
     type I = schema.infer<typeof issueSchema>;
 
-    const { register, handleSubmit, formState } = useFormState({ schema: issueSchema, mode: 'onBlur' });
-    const queueSelectProps = createFormSelectProps('queue', { register, formState }, { placeholder: 'Queue' })();
+    const { register, handleSubmit, formState, control } = useFormState({ schema: issueSchema, mode: 'onBlur' });
+    const queueSelectProps = createFormSelectProps(
+        'queue',
+        { register, control, formState },
+        { placeholder: 'Queue' },
+    )();
     const titleInputProps = createFormInputProps('title', { register, formState }, { placeholder: 'Title' })();
     const descriptionInputProps = createFormMarkdownEditorProps('description', { register, formState })();
 
     const onSubmit = async (issue: I) => {
         const { data } = await createIssueMutation({
-            variables: { issue },
+            variables: {
+                issue,
+            },
         });
         // TODO: https://github.com/productivity-tools/taskany/issues/90
         if (data) router.issue(data.createIssue.key);
     };
+
+    // TODO: use async select https://react-select.com/async
+    const { data: queues, loading: queuesAreLoading } = useAllQueuesQuery();
 
     return (
         <DialogPage>
@@ -59,11 +68,14 @@ export default function Page() {
                             <FormField type="complex">
                                 <Select
                                     brick="right"
-                                    options={[
-                                        { value: 'chocolate', label: 'Chocolate' },
-                                        { value: 'text', label: 'Text' },
-                                        { value: 'vanilla', label: 'Vanilla' },
-                                    ]}
+                                    options={
+                                        queuesAreLoading
+                                            ? []
+                                            : queues?.allQueues?.map((q) => ({
+                                                  label: `${q.key} — ${q.title}`,
+                                                  value: q.key,
+                                              }))
+                                    }
                                     {...queueSelectProps}
                                 />
 
