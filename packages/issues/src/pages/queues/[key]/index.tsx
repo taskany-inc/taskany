@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { useQueueByKeyQuery } from '@/generated/queries';
 import { textColorTertiary } from '@/generated/tokens';
+import { Link, Icon, NavBar, NavBarLink, Button, H3, H4 } from '@taskany/core/components';
 
 import NotFound from '../../404';
 import {
@@ -12,11 +13,6 @@ import {
     InfoPageContent,
     InfoPageHeaderTitle,
 } from '../../../components/InfoPage/InfoPage';
-import { NavBar, NavBarLink } from '../../../components/NavBar/NavBar';
-import { Link } from '../../../components/Link/Link';
-import { Icon } from '../../../components/Icon/Icon';
-import { Button } from '../../../components/Button/Button';
-import { H3, H4 } from '../../../components/Typo/Typo';
 import { defaultPageProps } from '../../../hooks/defaultPageProps';
 import { routes } from '../../../hooks/router';
 

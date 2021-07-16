@@ -1,0 +1,71 @@
+{
+  "name": "@taskany/core",
+  "description": "Taskany Core",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "url": "git@github.com:taskany-inc/taskany.git"
+  },
+  "main": "dist/",
+  "scripts": {
+    "postinstall": "npm run types",
+    "types": "npm-run-all design:tokens",
+    "build": "tsc",
+    "test": "jest",
+    "design:tokens": "node scripts/tokens",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "2.6.0",
+    "next": "11.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-hook-form": "7.9.0",
+    "react-select": "4.3.1",
+    "reakit": "1.3.8",
+    "redaxios": "0.4.1",
+    "rehype-stringify": "8.0.0",
+    "remark": "13.0.0",
+    "remark-gfm": "1.0.0",
+    "remark-parse": "9.0.0",
+    "remark-rehype": "8.1.0",
+    "styled-components": "5.3.0",
+    "teenyicons": "0.4.1",
+    "tinykeys": "1.2.0",
+    "zod": "3.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.14.6",
+    "@graphql-codegen/cli": "1.21.5",
+    "@storybook/addon-actions": "6.3.1",
+    "@storybook/addon-essentials": "6.3.1",
+    "@storybook/addon-links": "6.3.1",
+    "@storybook/react": "6.3.1",
+    "@svgr/webpack": "5.5.0",
+    "@testing-library/dom": "8.0.0",
+    "@testing-library/jest-dom": "5.14.1",
+    "@testing-library/react": "12.0.0",
+    "@testing-library/user-event": "13.1.9",
+    "@types/jest": "26.0.23",
+    "@types/node": "15.12.5",
+    "@types/react": "17.0.11",
+    "@types/react-select": "4.0.16",
+    "@types/styled-components": "5.1.11",
+    "babel-jest": "27.0.6",
+    "babel-loader": "8.2.2",
+    "babel-plugin-styled-components": "1.12.0",
+    "babel-plugin-transform-remove-console": "6.9.4",
+    "change-case": "4.1.2",
+    "jest": "27.0.6",
+    "jo-cli": "1.0.1",
+    "npm-run-all": "4.1.5",
+    "ts-jest": "27.0.3",
+    "typescript": "4.2.2"
+  },
+  "files": [
+    "components",
+    "tokens",
+    "utils"
+  ]
+}
