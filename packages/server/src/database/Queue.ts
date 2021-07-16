@@ -3,7 +3,6 @@ import { Resolver, Mutation, Arg, Ctx, InputType, Field, Query } from 'type-grap
 
 import { Queue } from '../@generated/prisma';
 import { Context } from '../types/context';
-import { TaskanyError } from '../types/error';
 
 @InputType()
 class CreateQueueInput {
@@ -28,7 +27,6 @@ export class QueueResolver {
             data: {
                 ...queue,
                 key: queue.key.toUpperCase(),
-                ownerId: user.id,
                 creatorId: user.id,
             },
         });
