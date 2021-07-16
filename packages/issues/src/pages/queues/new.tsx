@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/client';
 import { useCreateQueueMutation } from '@/generated/queries';
+import {
+    Form,
+    FormField,
+    FormActions,
+    useFormState,
+    schema,
+    Input,
+    createFormInputProps,
+    TextArea,
+    createFormTextAreaProps,
+    H1,
+    Hi,
+    Button,
+    TimelineComment,
+} from '@taskany/core/components';
 
-import { useRouter } from '../../hooks/router';
-import { H1, Hi } from '../../components/Typo/Typo';
 import {
     DialogPage,
     DialogPageTitle,
     DialogPageHeader,
     DialogPageContent,
 } from '../../components/DialogPage/DialogPage';
-import { Form, FormField, FormActions, useFormState, schema } from '../../components/Form/Form';
-import { Input, createFormInputProps } from '../../components/Input/Input';
-import { TextArea, createFormTextAreaProps } from '../../components/TextArea/TextArea';
-import { Button } from '../../components/Button/Button';
-import { TimelineComment } from '../../components/TimelineComment/TimelineComment';
+import { useRouter } from '../../hooks/router';
 import { defaultPageProps } from '../../hooks/defaultPageProps';
 
 const keyInfoMessage = (value: string) => `Your issues in queue will look like: ${value}-1, ${value}-431.`;

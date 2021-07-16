@@ -1,21 +1,30 @@
 import React from 'react';
 import { useSession } from 'next-auth/client';
 import { useCreateIssueMutation, useAllQueuesQuery } from '@/generated/queries';
+import {
+    Form,
+    FormField,
+    FormActions,
+    useFormState,
+    schema,
+    Input,
+    createFormInputProps,
+    MarkdownEditor,
+    createFormMarkdownEditorProps,
+    Select,
+    createFormSelectProps,
+    H1,
+    Button,
+    TimelineComment,
+} from '@taskany/core/components';
 
 import { useRouter } from '../../hooks/router';
-import { H1 } from '../../components/Typo/Typo';
 import {
     DialogPage,
     DialogPageTitle,
     DialogPageHeader,
     DialogPageContent,
 } from '../../components/DialogPage/DialogPage';
-import { Form, FormField, FormActions, useFormState, schema } from '../../components/Form/Form';
-import { Input, createFormInputProps } from '../../components/Input/Input';
-import { Select, createFormSelectProps } from '../../components/Select/Select';
-import { MarkdownEditor, createFormMarkdownEditorProps } from '../../components/MarkdownEditor/MarkdownEditor';
-import { Button } from '../../components/Button/Button';
-import { TimelineComment } from '../../components/TimelineComment/TimelineComment';
 import { defaultPageProps } from '../../hooks/defaultPageProps';
 import { useHotkey } from '../../hooks/useHotkeys';
 

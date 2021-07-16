@@ -2,12 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/client';
+import { Icon, User, SearchInput, Dropdown, DropdownAnchor, useDropdownState } from '@taskany/core/components';
 
-import { Icon } from '../Icon/Icon';
 import { Logo } from '../Logo/Logo';
-import { User } from '../User/User';
-import { SearchInput } from '../SearchInput/SearchInput';
-import { Dropdown, DropdownAnchor, useDropdownState } from '../Dropdown/Dropdown';
 
 const iconProps: Omit<React.ComponentProps<typeof Icon>, 'type'> = {
     stroke: 1,

@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "es2017",
+      "DOM"
+    ],
+    "rootDir": ".",
+    "outDir": ".",
+    "esModuleInterop": true,
+    "declaration": true,
+    "declarationMap": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "strictNullChecks": true,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "jsx": "preserve",
+    "isolatedModules": true
+  },
+  "include": ["global.d.ts", "utils", "tokens", "components"],
+  "exclude": [
+    "node_modules"
+  ]
+}
