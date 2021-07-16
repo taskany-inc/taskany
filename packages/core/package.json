@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "repository": {
-    "url": "git@github.com:taskany-inc/taskany.git"
+    "url": "git@github.com:productivity-tools/taskany.git"
   },
   "main": "dist/",
   "scripts": {
