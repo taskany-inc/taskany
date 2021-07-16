@@ -28,17 +28,23 @@ model Account {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map(name: "email_verified")
-  image         String?
-  accounts      Account[]
-  createdQueues Queue[]   @relation("createdQueues")
-  ownedQueues   Queue[]   @relation("ownedQueues")
-  issues        Issue[]   @relation("createdBy")
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+  id                 Int            @id @default(autoincrement())
+  name               String?
+  email              String?        @unique
+  emailVerified      DateTime?      @map(name: "email_verified")
+  image              String?
+  accounts           Account[]
+  createdQueues      Queue[]        @relation("createdQueues")
+  organizations      Organization[] @relation("organizations")
+  orgSubscriptions   Organization[] @relation("orgSubscriptions")
+  issues             Issue[]        @relation("issues")
+  issueSubscriptions Issue[]        @relation("issueSubscriptions")
+  posts              Post[]         @relation("posts")
+  postSubscriptions  Post[]         @relation("postSubscriptions")
+  comments           Comment[]      @relation("comments")
+  reactions          Reaction[]     @relation("reactions")
+  createdAt          DateTime       @default(now()) @map(name: "created_at")
+  updatedAt          DateTime       @default(now()) @map(name: "updated_at")
 
   @@map(name: "users")
 }
@@ -50,9 +56,7 @@ model Queue {
   description String?
   createdBy   User     @relation("createdQueues", fields: [creatorId], references: [id])
   creatorId   Int
-  owner       User     @relation("ownedQueues", fields: [ownerId], references: [id])
-  ownerId     Int
-  issues      Issue[]  @relation("queue")
+  issues      Issue[]  @relation("queueIssues")
   createdAt   DateTime @default(now()) @map(name: "created_at")
   updatedAt   DateTime @default(now()) @map(name: "updated_at")
 
@@ -60,19 +64,88 @@ model Queue {
 }
 
 model Issue {
-  id          Int      @id @default(autoincrement())
-  key         String   @unique
+  id          Int        @id @default(autoincrement())
+  key         String     @unique
   title       String
   description String?
-  createdBy   User     @relation("createdBy", fields: [creatorId], references: [id])
+  createdBy   User       @relation("issues", fields: [creatorId], references: [id])
   creatorId   Int
-  queue       Queue    @relation("queue", fields: [queueId], references: [id])
+  queue       Queue      @relation("queueIssues", fields: [queueId], references: [id])
   queueId     Int
-  createdAt   DateTime @default(now()) @map(name: "created_at")
-  updatedAt   DateTime @default(now()) @map(name: "updated_at")
+  reactions   Reaction[] @relation("issueReactions")
+  comments    Comment[]  @relation("issueComments")
+  subscribers User[]     @relation("issueSubscriptions")
+  createdAt   DateTime   @default(now()) @map(name: "created_at")
+  updatedAt   DateTime   @default(now()) @map(name: "updated_at")
   //   kind      IssueKind @relation(name: "kind", fields: [id], references: [id])
 
   @@map(name: "issues")
+}
+
+model Organization {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  title       String?
+  description String?
+  createdBy   User     @relation("organizations", fields: [creatorId], references: [id])
+  creatorId   Int
+  posts       Post[]   @relation("organizationPosts")
+  subscribers User[]   @relation("orgSubscriptions")
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "organizations")
+}
+
+model Post {
+  id             Int          @id @default(autoincrement())
+  title          String
+  description    String
+  published      DateTime?
+  createdBy      User         @relation("posts", fields: [creatorId], references: [id])
+  creatorId      Int
+  organization   Organization @relation("organizationPosts", fields: [organizationId], references: [id])
+  organizationId Int
+  reactions      Reaction[]   @relation("postReactions")
+  comments       Comment[]    @relation("postComments")
+  subscribers    User[]       @relation("postSubscriptions")
+  createdAt      DateTime     @default(now()) @map(name: "created_at")
+  updatedAt      DateTime     @default(now()) @map(name: "updated_at")
+
+  @@map(name: "posts")
+}
+
+model Comment {
+  id          Int        @id @default(autoincrement())
+  description String
+  createdBy   User       @relation("comments", fields: [creatorId], references: [id])
+  creatorId   Int
+  post        Post?      @relation("postComments", fields: [postId], references: [id])
+  postId      Int?
+  issue       Issue?     @relation("issueComments", fields: [issueId], references: [id])
+  issueId     Int?
+  reactions   Reaction[] @relation("commentReactions")
+  createdAt   DateTime   @default(now()) @map(name: "created_at")
+  updatedAt   DateTime   @default(now()) @map(name: "updated_at")
+
+  @@map(name: "comments")
+}
+
+model Reaction {
+  id        Int      @id @default(autoincrement())
+  kind      String
+  createdBy User     @relation("reactions", fields: [creatorId], references: [id])
+  creatorId Int
+  post      Post?    @relation("postReactions", fields: [postId], references: [id])
+  postId    Int?
+  issue     Issue?   @relation("issueReactions", fields: [issueId], references: [id])
+  issueId   Int?
+  comment   Comment? @relation("commentReactions", fields: [commentId], references: [id])
+  commentId Int?
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "reactions")
 }
 
 // model IssueKind {
