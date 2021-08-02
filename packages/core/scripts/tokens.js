@@ -10,7 +10,7 @@ const writeFileAsync = promisify(writeFile);
 const mkdirpAsync = promisify(mkdir);
 const writeToShadowDir = (file, content) =>
     mkdirpAsync(dirname(file), { recursive: true }).then(() => writeFileAsync(file, content, 'utf-8'));
-const themesFolder = join(process.cwd(), 'src', 'tokens');
+const themesFolder = join(process.cwd(), 'tokens');
 const themes = {
     dark: require('../design/themes/dark'),
     light: require('../design/themes/light'),

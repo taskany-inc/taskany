@@ -2,13 +2,10 @@ import { useRouter as NextRouter } from 'next/router';
 
 export const routes = {
     index: () => '/',
-    createQueue: () => '/queues/new',
-    queue: (id: string) => `/queues/${id}`,
-    queueBoards: (id: string) => `/queues/${id}/boards`,
-    queueInsights: (id: string) => `/queues/${id}/insights`,
-    queueSettigns: (id: string) => `/queues/${id}/settings`,
-    issue: (id: string) => `/issues/${id}`,
-    createIssue: () => '/issues/new',
+    createOrganization: () => '/organizations/new',
+    organization: (id: string) => `/organizations/${id}`,
+    article: (id: string) => `/articles/${id}`,
+    createArticle: () => '/articles/new',
 };
 
 export const useRouter = () => {
@@ -16,9 +13,9 @@ export const useRouter = () => {
 
     return {
         index: () => router.push(routes.index()),
-        queue: (id: string) => router.push(routes.queue(id)),
-        createQueue: () => router.push(routes.createQueue()),
-        issue: (id: string) => router.push(routes.issue(id)),
-        createIssue: () => router.push(routes.createIssue()),
+        organization: (id: string) => router.push(routes.organization(id)),
+        createOrganization: () => router.push(routes.createOrganization()),
+        article: (id: string) => router.push(routes.article(id)),
+        createArticle: () => router.push(routes.createArticle()),
     };
 };

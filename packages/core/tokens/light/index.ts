@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
     :root {
-        --text-font-family: Hack, monospace;
+        --text-font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
         --text-font-url: [object Object];
         --text-color-primary: #24292e;
         --text-color-secondary: #586069;
