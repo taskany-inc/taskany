@@ -1,0 +1,14 @@
+schema: ./node_modules/@taskany/server/schema.graphql
+generates:
+  ./src/@generated/queries.ts:
+    documents: ./src/queries/*.ts
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+  ./src/@generated/sdk.ts:
+    documents: ./src/queries/*.ts
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request

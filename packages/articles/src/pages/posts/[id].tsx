@@ -8,7 +8,7 @@ import { defaultPageProps } from '../../hooks/defaultPageProps';
 export const getServerSideProps = defaultPageProps;
 export default function Page() {
     const router = useRouter();
-    const { key } = router.query;
+    const { id } = router.query;
 
-    return <H1>Queue: {key}</H1>;
+    return <H1>Post: {id}</H1>;
 }

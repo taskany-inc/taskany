@@ -8,7 +8,7 @@
     "lint": "eslint --ext .js,.ts,.tsx .",
     "start:db": "docker-compose up -d",
     "stop:db": "docker-compose down",
-    "dev": "concurrently \"npm:dev --prefix=packages/server\" \"npm:dev --prefix=packages/issues\""
+    "dev": "concurrently \"npm:dev --prefix=packages/server\" \"npm:dev --prefix=packages/issues\" \"npm:dev --prefix=packages/articles\""
   },
   "devDependencies": {
     "@commitlint/cli": "12.0.0",
