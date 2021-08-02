@@ -4,7 +4,6 @@ import { createGlobalStyle } from 'styled-components';
 export default createGlobalStyle`
     :root {
         --text-font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
-        --text-font-url: [object Object];
         --text-color-primary: #fff;
         --text-color-secondary: #c9d1d9;
         --text-color-tertiary: #6a737d;
