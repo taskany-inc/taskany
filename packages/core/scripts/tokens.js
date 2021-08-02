@@ -42,7 +42,7 @@ const cssTokensFile = (theme, file, tabs = 4) => {
     ];
 
     for (const token in theme) {
-        fileContent.push(cssToken(token, theme[token]));
+        if (!theme[token].value) fileContent.push(cssToken(token, theme[token]));
     }
 
     fileContent.push(`${' '.repeat(tabs)}}\n`);
