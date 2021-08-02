@@ -1,6 +1,6 @@
 {
-  "name": "@taskany/issues",
-  "description": "Taskany Issues",
+  "name": "@taskany/articles",
+  "description": "Taskany Articles",
   "version": "0.1.0",
   "license": "MIT",
   "repository": {
@@ -9,14 +9,14 @@
   "scripts": {
     "postinstall": "npm run types",
     "types": "npm-run-all types:queries",
-    "dev": "next dev -p 3000",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "test": "jest",
     "types:queries": "graphql-codegen"
   },
   "dependencies": {
-    "@apollo/client": "3.4.0",
+    "@apollo/client": "3.3.20",
     "@taskany/core": "*",
     "@taskany/server": "*",
     "graphql": "15.5.1",
