@@ -1,5 +1,5 @@
 module.exports = {
-    textFontFamily: 'Hack, monospace',
+    textFontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji',
     textFontUrl: { value: '//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css' },
     textColorPrimary: '#fff',
     textColorSecondary: '#c9d1d9',

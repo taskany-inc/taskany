@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSession } from 'next-auth/client';
-import { useCreateIssueMutation, useAllQueuesQuery } from '@/generated/queries';
+import { useCreateIssueMutation } from '@/generated/queries';
 import {
     Form,
     FormField,
@@ -11,8 +11,6 @@ import {
     createFormInputProps,
     MarkdownEditor,
     createFormMarkdownEditorProps,
-    Select,
-    createFormSelectProps,
     H1,
     Button,
     TimelineComment,
@@ -41,12 +39,7 @@ export default function Page() {
     });
     type I = schema.infer<typeof issueSchema>;
 
-    const { register, handleSubmit, formState, control } = useFormState({ schema: issueSchema, mode: 'onBlur' });
-    const queueSelectProps = createFormSelectProps(
-        'queue',
-        { register, control, formState },
-        { placeholder: 'Queue' },
-    )();
+    const { register, handleSubmit, formState } = useFormState({ schema: issueSchema, mode: 'onBlur' });
     const titleInputProps = createFormInputProps('title', { register, formState }, { placeholder: 'Title' })();
     const descriptionInputProps = createFormMarkdownEditorProps('description', { register, formState })();
 
@@ -57,41 +50,25 @@ export default function Page() {
             },
         });
         // TODO: https://github.com/productivity-tools/taskany/issues/90
-        if (data) router.issue(data.createIssue.key);
+        if (data) router.article(data.createIssue.key);
     };
 
     useHotkey('$mod+Enter', handleSubmit(onSubmit));
 
-    // TODO: use async select https://react-select.com/async
-    const { data: queues, loading: queuesAreLoading } = useAllQueuesQuery();
-
     return (
         <DialogPage>
-            <DialogPageTitle>Create new issue</DialogPageTitle>
+            <DialogPageTitle>Create new article</DialogPageTitle>
 
             <DialogPageHeader>
-                <H1>Create new issue</H1>
+                <H1>Create new article</H1>
             </DialogPageHeader>
 
             <DialogPageContent>
                 {session?.user?.image && (
                     <TimelineComment image={session.user.image}>
                         <Form onSubmit={handleSubmit(onSubmit)}>
-                            <FormField type="complex">
-                                <Select
-                                    brick="right"
-                                    options={
-                                        queuesAreLoading
-                                            ? []
-                                            : queues?.allQueues?.map((q) => ({
-                                                  label: `${q.key} — ${q.title}`,
-                                                  value: q.key,
-                                              }))
-                                    }
-                                    {...queueSelectProps}
-                                />
-
-                                <Input brick="left" {...titleInputProps} />
+                            <FormField type="input">
+                                <Input {...titleInputProps} />
                             </FormField>
 
                             <FormField type="markdown">
@@ -99,7 +76,7 @@ export default function Page() {
                             </FormField>
 
                             <FormActions>
-                                <Button text="Create issue" view="primary" type="submit" />
+                                <Button text="Create article" view="primary" type="submit" />
                             </FormActions>
                         </Form>
                     </TimelineComment>

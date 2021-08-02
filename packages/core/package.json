@@ -6,7 +6,7 @@
   "repository": {
     "url": "git@github.com:productivity-tools/taskany.git"
   },
-  "main": "dist/",
+  "main": "index.js",
   "scripts": {
     "postinstall": "npm run types",
     "types": "npm-run-all design:tokens",

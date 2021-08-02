@@ -8,8 +8,8 @@ export const useHotkeys = () => {
 
     useEffect(() => {
         const unsubscribe = tinykeys(window, {
-            'c q': () => router.createQueue(),
-            'c i': () => router.createIssue(),
+            'c o': () => router.createOrganization(),
+            'c a': () => router.createArticle(),
         });
         return () => {
             unsubscribe();
