@@ -12,6 +12,8 @@ const componentsMap = {
     kanban: dynamic(() => import('teenyicons/outline/servers.svg')),
     pieChart: dynamic(() => import('teenyicons/outline/pie-chart-alt.svg')),
     arrowDownSmall: dynamic(() => import('teenyicons/outline/down-small.svg')),
+    clipboardPlus: dynamic(() => import('teenyicons/outline/clipboard-plus.svg')),
+    clipboardTick: dynamic(() => import('teenyicons/outline/clipboard-tick.svg')),
 };
 
 const sizesMap = {
@@ -26,14 +28,15 @@ interface IconProps {
     color?: string;
     stroke?: number;
     className?: string;
+    onClick?: (e: React.MouseEvent) => void;
 }
 
-export const Icon: React.FC<IconProps> = ({ type, size, color, stroke = 1, className }) => {
+export const Icon: React.FC<IconProps> = ({ type, size, color, stroke = 1, className, onClick }) => {
     const Component: React.ComponentType<any> = componentsMap[type];
     const sizePx = `${sizesMap[size]}px`;
 
     return (
-        <span className={className} style={{ lineHeight: 'initial' }}>
+        <span className={className} style={{ lineHeight: 'initial' }} onClick={onClick}>
             <Component width={sizePx} height={sizePx} color={color} strokeWidth={stroke} />
         </span>
     );

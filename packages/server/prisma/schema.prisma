@@ -43,6 +43,7 @@ model User {
   postSubscriptions  Post[]         @relation("postSubscriptions")
   comments           Comment[]      @relation("comments")
   reactions          Reaction[]     @relation("reactions")
+  assets             Asset[]        @relation("assets")
   createdAt          DateTime       @default(now()) @map(name: "created_at")
   updatedAt          DateTime       @default(now()) @map(name: "updated_at")
 
@@ -146,6 +147,18 @@ model Reaction {
   updatedAt DateTime @default(now()) @map(name: "updated_at")
 
   @@map(name: "reactions")
+}
+
+model Asset {
+  id          Int        @id @default(autoincrement())
+  key         String     @unique
+  url         String
+  createdBy   User       @relation("assets", fields: [creatorId], references: [id])
+  creatorId   Int
+  createdAt   DateTime   @default(now()) @map(name: "created_at")
+  updatedAt   DateTime   @default(now()) @map(name: "updated_at")
+
+  @@map(name: "assets")
 }
 
 // model IssueKind {
