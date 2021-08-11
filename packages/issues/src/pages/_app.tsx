@@ -1,8 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { GlobalStyle, Theme, Apollo } from '@taskany/core/components';
 
-import { NextAuth } from '../components/NextAuth/NextAuth';
 import { Root } from '../components/Root/Root';
 import { useHotkeys } from '../hooks/useHotkeys';
 
@@ -15,17 +13,9 @@ export default function App({ Component, pageProps }) {
                 <link rel="icon" href="/favicon.png" />
             </Head>
 
-            <GlobalStyle />
-
-            <Theme theme="light" />
-
-            <Apollo>
-                <NextAuth session={pageProps.session}>
-                    <Root>
-                        <Component {...pageProps} />
-                    </Root>
-                </NextAuth>
-            </Apollo>
+            <Root ssrSession={pageProps.session}>
+                <Component {...pageProps} />
+            </Root>
         </>
     );
 }
