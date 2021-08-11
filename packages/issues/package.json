@@ -16,6 +16,7 @@
     "types:queries": "graphql-codegen"
   },
   "dependencies": {
+    "@apollo/client": "3.4.0",
     "@taskany/core": "*",
     "@taskany/server": "*",
     "graphql": "15.5.1",
