@@ -44,6 +44,7 @@ const StyledIcon = styled(Icon)`
     top: 3px;
     left: 5px;
     position: relative;
+    margin-right: 5px;
 
     cursor: pointer;
 
@@ -135,6 +136,7 @@ interface TimelineAssetProps {
 }
 const TimelineAsset: React.FC<TimelineAssetProps> = ({ id, url, createdAt }) => {
     const [copied, setCopied] = useState<boolean>(false);
+    const [copiedResize, setCopiedResize] = useState<boolean>(false);
 
     return (
         <StyledTimelineAsset>
@@ -154,6 +156,19 @@ const TimelineAsset: React.FC<TimelineAssetProps> = ({ id, url, createdAt }) => 
                         setCopied(true);
                         setTimeout(() => {
                             setCopied(false);
+                        }, 3000);
+                    }}
+                />
+                <StyledIcon
+                    size="s"
+                    active={copiedResize}
+                    type="zoomOut"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        // navigator.clipboard.writeText(url);
+                        setCopiedResize(true);
+                        setTimeout(() => {
+                            setCopiedResize(false);
                         }, 3000);
                     }}
                 />

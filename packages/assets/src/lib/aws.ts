@@ -43,20 +43,24 @@ export async function upload({ key, body, contentType }) {
 }
 
 export async function getObjectStream({ key }) {
-    const response = await s3
-        .headObject({
-            Bucket: bucketName,
-            Key: key,
-        })
-        .promise();
+    // const response = await s3
+    //     .headObject({
+    //         Bucket: bucketName,
+    //         Key: key,
+    //     })
+    //     .promise();
 
-    if (!response) {
-        return {
-            key,
-            success: false,
-            error: new Error('Upload failed'),
-        };
-    }
+    // console.log(response);
+
+    // if (!response) {
+    //     return {
+    //         key,
+    //         success: false,
+    //         error: new Error('Upload failed'),
+    //     };
+    // }
+
+    console.log('exists');
 
     const stream = s3
         .getObject({
@@ -65,15 +69,15 @@ export async function getObjectStream({ key }) {
         })
         .createReadStream();
 
-    const { ContentLength, LastModified, ETag } = response;
+    // const { ContentLength, LastModified, ETag } = response;
 
     return {
         stream,
-        meta: {
-            ContentLength,
-            LastModified,
-            ETag,
-        },
+        // meta: {
+        //     ContentLength,
+        //     LastModified,
+        //     ETag,
+        // },
     };
 }
 
