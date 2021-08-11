@@ -1,8 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
-import { GlobalStyle, Theme } from '@taskany/core/components';
+import { GlobalStyle, Theme, Apollo } from '@taskany/core/components';
 
-import { Apollo } from '../components/Apollo/Apollo';
 import { NextAuth } from '../components/NextAuth/NextAuth';
 import { Root } from '../components/Root/Root';
 import { useHotkeys } from '../hooks/useHotkeys';

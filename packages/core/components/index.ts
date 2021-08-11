@@ -15,3 +15,4 @@ export * from './Typo/Typo';
 export * from './SearchInput/SearchInput';
 export * from './Button/Button';
 export * from './Dropdown/Dropdown';
+export * from './Apollo/Apollo';
